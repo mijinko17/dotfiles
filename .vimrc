@@ -1,17 +1,47 @@
-".dein.tomlをホームディレクトリに置いてvimを起動すると大体どうにかなる
+"必要；{
+"python3,pyvimのインストール(deoplete用)
+".dein.tomlと.dein_lazy.tomlをホームに置く
+"}
 
 set number
 set backspace=indent,eol,start
 set noswapfile
 "set clipboard+=unnamed
+syntax enable
+
 
 "コマンドの変更{
 inoremap <silent> jj <ESC>
+inoremap <silent> ｊｊ <ESC>
 noremap o o<ESC>
+noremap O O<ESC>
+imap <C-f> <Right>
+"}
+
+" tab{
+" Tab文字の表示幅（スペースいくつ分）
+set tabstop=4
+" Tabを入力したときに何文字の空白を入力するか
+set softtabstop=4
+" 自動インデント時の空白数
+set shiftwidth=4
+" 改行時に次の行のインデントを調整
+set smartindent
+
+set autoindent
+"}
+
+" カッコ補完{
+inoremap { {}<Left>
+inoremap {<CR> {}<Left><CR><ESC><S-o>
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap '' ''<Left>
+inoremap "" ""<Left>
 "}
 
 "dein{
-" dein自体の自動インストール
+"dein自体の自動インストール
 let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
 let s:dein_dir = s:cache_home . '/dein'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
@@ -22,22 +52,23 @@ endif
 let &runtimepath = s:dein_repo_dir .",". &runtimepath
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
-
   let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/.dein.toml'
-  call dein#load_toml(s:toml_file)
+  let s:toml_lazy_file = fnamemodify(expand('<sfile>'), ':h').'/.dein_lazy.toml'
+  call dein#load_toml(s:toml_file, {'lazy': 0})
+  call dein#load_toml(s:toml_lazy_file, {'lazy': 1})
   if !has('nvim')
-    call dein#add('roxma/nvim-yarp')
-    call dein#add('roxma/vim-hug-neovim-rpc')
+"    call dein#add('roxma/nvim-yarp')
+"    call dein#add('roxma/vim-hug-neovim-rpc')
   endif
-
   call dein#end()
   call dein#save_state()
 endif
-
+"なぜかここに書かないとシンタックスハイライトが効かない
 filetype plugin indent on
-syntax enable
-
+"無いプラグインを自動インストール
 if dein#check_install()
   call dein#install()
 endif
+"プラグインが変なときに呼ぶとどうにかなりがちなコマンド長スギ
+command! Recache call dein#recache_runtimepath()
 "}
