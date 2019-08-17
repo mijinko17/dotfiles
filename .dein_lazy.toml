@@ -8,6 +8,7 @@ hook_add='''
 let g:deoplete#enable_at_startup = 1
 '''
 
+#スニペット
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
 depends = ['neosnippet-snippets', 'context_filetype.vim']
@@ -31,5 +32,8 @@ command Snip :NeoSnippetEdit
 let g:neosnippet#snippets_directory='~/.vim/snippets/'
 '''
 
+#基本のスニペット入ってるやつ
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
+
+

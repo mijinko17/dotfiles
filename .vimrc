@@ -7,14 +7,15 @@ set number
 set backspace=indent,eol,start
 set noswapfile
 "set clipboard+=unnamed
+set splitright
 syntax enable
 
 
 "コマンドの変更{
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
-noremap o o<ESC>
-noremap O O<ESC>
+noremap oo o<ESC>
+noremap OO O<ESC>
 imap <C-f> <Right>
 "}
 
@@ -35,6 +36,8 @@ set autoindent
 inoremap { {}<Left>
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap ( ()<Left>
+"中括弧エンターみたいな挙動にしたいが同じ方法ではうまくいかないので仕方なくこうしている
+inoremap (<CR> (<CR><BS><BS>)<ESC><S-o><BS>
 inoremap [ []<Left>
 inoremap '' ''<Left>
 inoremap "" ""<Left>
@@ -56,10 +59,6 @@ if dein#load_state(s:dein_dir)
   let s:toml_lazy_file = fnamemodify(expand('<sfile>'), ':h').'/.dein_lazy.toml'
   call dein#load_toml(s:toml_file, {'lazy': 0})
   call dein#load_toml(s:toml_lazy_file, {'lazy': 1})
-  if !has('nvim')
-"    call dein#add('roxma/nvim-yarp')
-"    call dein#add('roxma/vim-hug-neovim-rpc')
-  endif
   call dein#end()
   call dein#save_state()
 endif

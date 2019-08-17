@@ -1,6 +1,3 @@
-#起動条件とかの書き方は下記がわかりやすい
-#https://qiita.com/delphinus/items/00ff2c0ba972c6e41542
-
 #ディレクトリ構造を見るやつ
 [[plugins]]
 repo = 'scrooloose/nerdtree'
@@ -38,4 +35,42 @@ on_if = '!has("nvim")'
 #deopleteのために必要その2
 [[plugins]]
 repo = 'roxma/nvim-yarp'
-if = '!has("nvim")'
+
+#構文チェック
+#lazyにしたい気もするが,変なタイミングでサインコラムがデュンってなってほしくないためここ
+[[plugins]]
+repo = 'w0rp/ale'
+on_event = 'InsertEnter'
+hook_add = '''
+"シンボルカラムの色を背景に揃える
+highlight clear SignColumn
+" シンボルカラム表示しっぱなし
+let g:ale_sign_column_always = 1
+" ステータスラインにエラーの数を常に表示
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+" 使うlinterの選択
+let g:ale_linters = {'cpp': ['gcc'], 'python': ['flake8'], 'javascript': ['eslint']}
+" ↑で指定したlinter以外を勝手に使わないようにする
+let g:ale_linters_explicit = 1
+" gccのオプション
+let g:ale_cpp_gcc_executable = 'gcc'
+'''
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+hook_add = '''
+"quickrun
+set splitbelow
+let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+"クリップボードから実行
+nnoremap rr :QuickRun<Space>-input<Space>=@+<CR>
+"インプットファイルを開く
+nnoremap ri :vs<Space>input<CR>
+"インプットファイルから実行
+nnoremap re :QuickRun<Space>-input<Space>input<CR>
+let g:quickrun_config.cpp = {
+\   'command': 'g++',
+\   'cmdopt': '-std=c++14',
+\   'outputter/buffer/split': '10'
+\ }
+'''

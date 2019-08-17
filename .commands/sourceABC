@@ -1,0 +1,5 @@
+mkdir -p ~/program/Atcoder/ABC/$1
+cd ~/program/Atcoder/ABC/$1
+if [ "$2" != "" ]; then
+	vim $2.cpp
+fi
