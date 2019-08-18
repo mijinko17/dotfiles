@@ -17,6 +17,7 @@ inoremap <silent> ｊｊ <ESC>
 noremap oo o<ESC>
 noremap OO O<ESC>
 imap <C-f> <Right>
+noremap ra ggvG"+y
 "}
 
 " tab{
