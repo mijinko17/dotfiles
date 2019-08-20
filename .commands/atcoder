@@ -1,2 +1,2 @@
 cd /Users/user/program/Atcoder/cpp/main
-vim hello.cpp
+nvim hello.cpp
