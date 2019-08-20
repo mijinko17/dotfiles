@@ -1,0 +1,5 @@
+mkdir -p ~/program/Atcoder/AGC/$1
+cd ~/program/Atcoder/AGC/$1
+if [ "$2" != "" ]; then
+	nvim $2.cpp
+fi
