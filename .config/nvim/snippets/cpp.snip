@@ -1,0 +1,52 @@
+snippet     header
+abbr        include+main
+options     head
+    #include <bits/stdc++.h>
+    using namespace std;
+    
+    int main(){
+    	${1}
+    }
+
+snippet     vector
+abbr        vector<>
+options     word
+    vector<${1}>
+
+snippet     deque
+abbr        deque<>
+options     word
+    deque<${1}>
+
+snippet     pair
+abbr        declare pair
+options     word
+    pair<${1},${2}>${0}
+
+snippet     ll 
+abbr        long long int
+options     word
+    long long int
+
+snippet     bits
+abbr        include <bits/stdc++.h>
+options     head
+    #include <bits/stdc++.h>
+
+snippet     gcd
+abbr        gcd's code
+options     head
+    int gcd(long long int m,long long int n){
+    	m=abs(m);
+    	n=abs(n);
+    	if(m*n==0){
+    		return max(m,n);
+    	}else {
+    		return gcd(min(m,n),max(m,n)%min(m,n));
+    	}
+    }
+
+snippet     gcd
+abbr        call gcd
+options     word
+    gcd(${1},${2})${0}

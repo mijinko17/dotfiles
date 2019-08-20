@@ -1,0 +1,42 @@
+#補完するやつ
+#python3、pip3によるpyvimのインスコが必要(githubのrequirmentをよく読む)
+#homebrewでpython3入れるとpip3入らなくてキレそう(https://teratail.com/questions/126801)
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+on_event = 'InsertEnter'
+hook_add='''
+let g:deoplete#enable_at_startup = 1
+" バックスペースで補完のポップアップを閉じたいができない
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> deoplete#close_popup()."<C-h>"
+'''
+
+#スニペット
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
+on_event = 'InsertCharPre'
+on_ft = 'snippet'
+hook_add='''
+" タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
+imap <expr><TAB>
+	 \ pumvisible() ? "\<C-n>" :
+	 \ neosnippet#expandable_or_jumpable() ?
+	 \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+	 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" エンターキーで展開
+imap <expr><CR>
+	\ (pumvisible() && neosnippet#expandable()) ?
+	\ "\<Plug>(neosnippet_expand)" : "\<CR>"
+"ユーザースニペットのやつ呼び出すコマンド長スギ
+command Snip :NeoSnippetEdit
+"スニペットの場所を指定
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+'''
+
+#基本のスニペット入ってるやつ
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+
