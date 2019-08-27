@@ -12,15 +12,23 @@ syntax enable
 
 
 "コマンドの変更{
+"j連打でインサートを抜ける
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
+"Ctrl+j連打でビジュアル抜ける
+xnoremap <silent> <C-j><C-j> <ESC>
+"o,O連打で空行挿入
 noremap oo o<ESC>
 noremap OO O<ESC>
+"raで全選択＋クリップボードにヤンク
+noremap ra ggvG$"+y
+"insert中の移動
 imap <C-h> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
-noremap ra ggvG$"+y
+" ESC連打でハイライト解除
+nmap <silent><Esc><Esc> :nohlsearch<CR><Esc>
 "}
 
 " tab{
@@ -47,6 +55,14 @@ inoremap '' ''<Left>
 inoremap "" ""<Left>
 "}
 
+"tex{
+if expand("%:t") =~ ".*\.tex"
+  inoremap ; \
+  inoremap \ ;
+  inoremap $ $$<Left>
+endif
+"}
+
 "dein{
 "dein自体の自動インストール
 let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
@@ -59,8 +75,6 @@ endif
 let &runtimepath = s:dein_repo_dir .",". &runtimepath
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
-"  let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/.dein.toml'
-"  let s:toml_lazy_file = fnamemodify(expand('<sfile>'), ':h').'/.dein_lazy.toml'
   let s:toml_file = expand('~/.config/nvim/dein').'/dein.toml'
   let s:toml_lazy_file = expand('~/.config/nvim/dein').'/dein_lazy.toml'
   call dein#load_toml(s:toml_file, {'lazy': 0})
@@ -77,3 +91,10 @@ endif
 "プラグインが変なときに呼ぶとどうにかなりがちなコマンド長スギ
 command! Recache call dein#recache_runtimepath()
 "}
+
+" Change clang binary path
+"call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
+
+" Change clang options
+"call deoplete#custom#var('clangx', 'default_c_options', '')
+"call deoplete#custom#var('clangx', 'default_cpp_options', '')
