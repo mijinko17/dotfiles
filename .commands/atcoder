@@ -1,2 +1,2 @@
-cd /Users/user/program/Atcoder/cpp/main
+cd ~/program/competitive-programming/Atcoder/cpp/main
 nvim hello.cpp
