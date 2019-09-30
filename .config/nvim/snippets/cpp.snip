@@ -5,7 +5,7 @@ options     head
     using namespace std;
     
     int main(){
-    	${1}
+        ${0}
     }
 
 snippet     vector
@@ -13,15 +13,35 @@ abbr        vector<>
 options     word
     vector<${1}>
 
+snippet     queue
+abbr        queue<>
+options     word
+    queue<${1}>
+
 snippet     deque
 abbr        deque<>
 options     word
     deque<${1}>
 
+snippet     priority_queue
+abbr        priority_queue<>
+options     word
+    priority_queue<${1}>
+
+snippet     unordered_map
+abbr        unordered_map<>
+options     word
+    unordered_map<${1},${2}>
+
 snippet     pair
 abbr        declare pair
 options     word
-    pair<${1},${2}>${0}
+    pair<${1},${2}>
+
+snippet     make_pair
+abbr        make_pair(,)
+options     word
+    make_pair(${1},${2})
 
 snippet     ll 
 abbr        long long int
@@ -33,20 +53,100 @@ abbr        include <bits/stdc++.h>
 options     head
     #include <bits/stdc++.h>
 
-snippet     gcd
+snippet     gcdcode
 abbr        gcd's code
 options     head
-    int gcd(long long int m,long long int n){
-    	m=abs(m);
-    	n=abs(n);
-    	if(m*n==0){
-    		return max(m,n);
-    	}else {
-    		return gcd(min(m,n),max(m,n)%min(m,n));
-    	}
-    }
+	long long int gcd(long long int m,long long int n){
+		m=abs(m);
+	 	n=abs(n);
+	    if(m*n==0){
+			return max(m,n);
+		}else {
+			return gcd(min(m,n),max(m,n)%min(m,n));
+		}
+	}${0}
 
 snippet     gcd
 abbr        call gcd
 options     word
     gcd(${1},${2})${0}
+
+snippet     pf
+abbr        prime factorization
+alias       prime factorization
+options     head
+	// 素因数分解 O(√N)
+	vector<long long int> pf(long long int n) {
+		vector<long long int> res;
+		for (long long int i = 2; i*i <= n; i++) if (n%i==0) {
+			res.push_back(i);
+			while (n%i==0) n /= i;
+		}
+		if (n!=1) res.push_back(n);
+		return res;
+	}${0}
+
+snippet     inv_p
+abbr        inverse element in Z_p
+options     head
+	//a^n mod pを計算　O(log n)
+	long long int pow_p(long long int a, long long int n, long long int p)
+	{
+		if (n == 1){
+			return a;
+		}else{
+			long long int temp = pow_p(a, n / 2, p);
+			if (n % 2 == 0){
+				return (temp * temp) % p;
+			}else{
+				return (((temp * temp) % p) * a) % p;
+			}
+		}
+	}
+	
+	//Z_pでのaの逆元を計算 O(log p)
+	long long int inv_p(long long int a, long long int p){
+		return pow_p(a, p - 2, p);
+	}${0}
+
+snippet     union_find
+abbr        struct union_find(long long int n)
+options     head
+	//素集合データ構造
+	//ref:https://ei1333.github.io/luzhiled/snippets/structure/union-find.html
+	struct union_find {
+		//parent[v]==w(>=0):vの親はw
+		//parent[v]==k(<0):vは根&&vの属するグループの要素数は-k
+		vector<long long int> parent;
+		//コンストラクタ
+		union_find(long long int n){
+			parent.assign(n,-1);
+		}
+		//vの根を求める
+		//求めると同時に親を根に置き換える(木の圧縮)
+		long long int root(long long int v){
+			if (parent[v]<0) {
+				return v;
+			}else {
+				parent[v]=root(parent[v]);
+				return parent[v];
+			}
+		}
+		//vが属するグループの要素数を求める
+		long long int size(long long int v){
+			return -parent[root(v)];
+		}
+		//vとwを繋げる
+		void unite(long long int v,long long int w){
+			v=root(v);
+			w=root(w);
+			if(v==w) return;
+			if (parent[v]<parent[w]) swap(v,w);
+			parent[w]+=parent[v];
+			parent[v]=w;
+		}
+		//vとwが同値か判定
+		bool isSame(long long int v,long long int w){
+			return root(v)==root(w);
+		}
+	};${0}
