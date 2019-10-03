@@ -1,5 +1,6 @@
-"必要；{
+"必要:{
 "python3,pyvimのインストール(deoplete用)
+"clang_formatのインストール
 ".dein.tomlと.dein_lazy.tomlをホームに置く
 "}
 
@@ -9,7 +10,6 @@ set noswapfile
 "set clipboard+=unnamed
 set splitright
 syntax enable
-
 
 "コマンドの変更{
 "j連打でインサートを抜ける
@@ -31,19 +31,6 @@ imap <C-l> <Right>
 nmap <silent><Esc><Esc> :nohlsearch<CR><Esc>
 "}
 
-" tab{
-" Tab文字の表示幅（スペースいくつ分）
-set tabstop=4
-" Tabを入力したときに何文字の空白を入力するか
-set softtabstop=4
-" 自動インデント時の空白数
-set shiftwidth=4
-" 改行時に次の行のインデントを調整
-set smartindent
-
-set autoindent
-"}
-
 " カッコ補完{
 inoremap { {}<Left>
 inoremap {<CR> {}<Left><CR><ESC><S-o>
@@ -53,6 +40,22 @@ inoremap (<CR> (<CR><BS><BS>)<ESC><S-o><BS>
 inoremap [ []<Left>
 inoremap '' ''<Left>
 inoremap "" ""<Left>
+"}
+
+"clang-format{
+function! s:clang_format()
+  let now_line = line(".")
+  let clang_format_option="\"{ BasedOnStyle: Google, IndentWidth: 4 ,AllowShortFunctionsOnASingleLine: None }\""
+  exec ":%! clang-format -style=".clang_format_option
+  exec ":" . now_line
+endfunction
+"保存時に自動でフォーマット
+if executable('clang-format')
+  augroup cpp_clang_format
+    autocmd!
+    autocmd BufWrite,FileWritePre,FileAppendPre *.[ch]pp call s:clang_format()
+  augroup END
+endif
 "}
 
 "tex{
@@ -92,9 +95,17 @@ endif
 command! Recache call dein#recache_runtimepath()
 "}
 
-" Change clang binary path
-"call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
-
-" Change clang options
-"call deoplete#custom#var('clangx', 'default_c_options', '')
-"call deoplete#custom#var('clangx', 'default_cpp_options', '')
+" tab{
+" expandtabの設定をdeinの前に書かないといけないっぽいので仕方なくここ
+" Tab文字の表示幅（スペースいくつ分）
+set tabstop=4
+"tabでソフトタブを入力
+set expandtab
+" Tabを入力したときに何文字の空白を入力するか
+set softtabstop=4
+" 自動インデント時の空白数
+set shiftwidth=4
+" 改行時に次の行のインデントを調整
+set smartindent
+set autoindent
+"}
