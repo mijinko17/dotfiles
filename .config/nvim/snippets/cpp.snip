@@ -2,8 +2,10 @@ snippet     header
 abbr        include+main
 options     head
     #include <bits/stdc++.h>
+    #define all(v) v.begin(), v.end()
+    typedef long long int lint;
     using namespace std;
-    
+
     int main() {
         ${0}
     }
@@ -43,6 +45,16 @@ abbr        make_pair(,)
 options     word
     make_pair(${1},${2})
 
+snippet     upper_bound
+abbr        xより真に値が大きいもので最小のイテレータ
+options     word
+    upper_bound(${1}, ${2})
+
+snippet     lower_bound
+abbr        値がx以上の最小のイテレータ
+options     word
+    lower_bound(${1}, ${2})
+
 snippet     ll 
 abbr        long long int
 options     word
@@ -78,30 +90,21 @@ options     head
         return (a / powint(p, n)) % p;
     }${0}
 
-snippet     gcdcode
-abbr        gcd's code
+snippet     gcd
+abbr        gcd by euclid
 options     head
-    long long int gcd(long long int m, long long int n) {
-        m = abs(m);
-        n = abs(n);
-        if (m * n == 0) {
-            return max(m, n);
-        } else {
-            return gcd(min(m, n), max(m, n) % min(m, n));
-        }
+    //最大公倍数の計算(ユークリッドの互除法)
+    long long int gcd(long long int a, long long int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
     }${0}
 
-snippet     gcd
-abbr        call gcd
-options     word
-    gcd(${1},${2})${0}
-
-snippet     prime factorization
-abbr        prime factorization
-alias       pf
+snippet     pf_vec
+abbr        prime factorization with vector
+alias       prime factorization
 options     head
     // 素因数分解 O(√N)
-    vector<long long int> pf(long long int n) {
+    vector<long long int> pf_vec(long long int n) {
         vector<long long int> res;
         for (long long int i = 2; i * i <= n; i++)
             if (n % i == 0) {
@@ -111,6 +114,23 @@ options     head
         if (n != 1) res.push_back(n);
         return res;
     }${0}
+
+snippet     pf_um
+abbr        prime factorization with unordered_map
+alias       prime factorization
+options     head
+    //素因数分解unordered_map版　O(√n)
+    template <typename T>
+    unordered_map<T, T> pf_um(T n) {
+        unordered_map<T, T> res;
+        for (long long int i = 2; i * i <= n; i++)
+            while (n % i == 0) {
+                res[i]++;
+                n /= i;
+            }
+        if (n != 1) res[n]++;
+        return res;
+    }
 
 snippet     inv_p
 abbr        inverse element in Z_p
@@ -132,6 +152,60 @@ options     head
     // Z_pでのaの逆元を計算 O(log p)
     long long int inv_p(long long int a, long long int p) {
         return pow_p(a, p - 2, p);
+    }${0}
+
+snippet     bipartite
+abbr        bipartite decomposition
+options     head
+    //連結二部グラフの分割を+1,-1で与える
+    // graphは隣接リスト
+    //二部グラフでなかったらbipartite[0]=0
+    vector<int> bipartite(vector<vector<int>> &graph) {
+        vector<int> res(graph.size(), 0);
+        res[0] = 1;
+        queue<int> bfs;
+        bfs.push(0);
+        while (bfs.size() > 0) {
+            int depart = bfs.front();
+            vector<int> dests = graph[depart];
+            for (int i = 0; i < (int)dests.size(); i++) {
+                if (res[dests[i]] == 0) {
+                    res[dests[i]] = -res[depart];
+                    bfs.push(dests[i]);
+                } else if (res[dests[i]] * res[depart] == 1) {
+                    res[0] = 0;
+                    return res;
+                }
+            }
+            bfs.pop();
+        }
+        return res;
+    }${0}
+
+snippet     isBipartite
+abbr        judge the graph is bipartite or not
+options     head
+    //連結グラフが二部グラフか判定
+    // graphは隣接リスト
+    bool isBipartite(vector<vector<int>> &graph) {
+        vector<int> res(graph.size(), 0);
+        res[0] = 1;
+        queue<int> bfs;
+        bfs.push(0);
+        while (bfs.size() > 0) {
+            int depart = bfs.front();
+            vector<int> dests = graph[depart];
+            for (int i = 0; i < (int)dests.size(); i++) {
+                if (res[dests[i]] == 0) {
+                    res[dests[i]] = -res[depart];
+                    bfs.push(dests[i]);
+                } else if (res[dests[i]] * res[depart] == 1) {
+                    return false;
+                }
+            }
+            bfs.pop();
+        }
+        return true;
     }${0}
 
 snippet     union_find
