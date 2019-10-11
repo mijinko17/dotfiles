@@ -93,10 +93,24 @@ options     head
 snippet     gcd
 abbr        gcd by euclid
 options     head
-    //最大公倍数の計算(ユークリッドの互除法)
+    //最大公約数の計算(ユークリッドの互除法)
     long long int gcd(long long int a, long long int b) {
         if (b == 0) return a;
         return gcd(b, a % b);
+    }${0}
+
+snippet     combination
+abbr        calc nCr by pascal's triangle
+options     head
+    //コンビネーション(パスカルの三角形)
+    vector<vector<long long int>> comb(long long int n) {
+        vector<vector<long long int>> res(n + 1, vector<long long int>(n + 1, 1));
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j < i; j++) {
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+            }
+        }
+        return res;
     }${0}
 
 snippet     pf_vec
@@ -154,12 +168,57 @@ options     head
         return pow_p(a, p - 2, p);
     }${0}
 
+snippet     cumulative_sum
+abbr        cumulative_sum
+options     head
+    //累積和
+    struct cumulative_sum {
+        // data[i]:[0,i)の和
+        vector<long long int> data;
+        //コンストラクタ O(n)
+        template <typename T>
+        cumulative_sum(vector<T>& v) {
+            data.assign(v.size() + 1, 0);
+            for (int i = 0; i < (int)v.size(); i++) {
+                data[i + 1] = data[i] + v[i];
+            }
+        }
+        //[a,b)の和を求める
+        long long int sum(long long int a, long long int b) {
+            return data[b] - data[a];
+        }
+    };${0}
+
+snippet     cumulative_sum_2D
+abbr        cumulative sum 2D
+options     head
+    //二次元累積和
+    struct cumulative_sum_2d {
+        vector<vector<long long int>> data;
+        //コンストラクタ
+        template <typename T>
+        cumulative_sum_2d(vector<vector<T>> &v) {
+            data = vector<vector<long long int>>(
+                v.size() + 1, vector<long long int>(v[0].size() + 1, 0));
+            for (int i = 0; i < (int)v.size(); i++) {
+                for (int j = 0; j < (int)v[0].size(); j++) {
+                    data[i + 1][j + 1] =
+                        data[i + 1][j] + data[i][j + 1] - data[i][j] + v[i][j];
+                }
+            }
+        }
+        //[a,b)×[c,d)の和を計算
+        long long int sum(int a, int b, int c, int d) {
+            return data[b][d] - data[b][c] - data[a][d] + data[a][c];
+        }
+    };${0}
+
 snippet     bipartite
 abbr        bipartite decomposition
 options     head
     //連結二部グラフの分割を+1,-1で与える
     // graphは隣接リスト
-    //二部グラフでなかったらbipartite[0]=0
+    //bipartite[0]で二部グラフか判定([0]==1:二部グラフ、[0]==0:二部グラフでない)
     vector<int> bipartite(vector<vector<int>> &graph) {
         vector<int> res(graph.size(), 0);
         res[0] = 1;
@@ -208,6 +267,24 @@ options     head
         return true;
     }${0}
 
+snippet     circle
+abbr        identified v[0]~v[n]
+options     head
+    //円形リスト
+    template <typename Num>
+    struct circle {
+        vector<Num> c;
+        long long int _l;
+        circle(long long int l) : _l(l) {
+            c = vector<Num>(l);
+        }
+        Num& operator[](int k) {
+            int temp = k % _l;
+            if (temp < 0) temp += _l;
+            return c[temp];
+        }
+    };${0}
+
 snippet     union_find
 abbr        struct union_find(long long int n)
 alias       uf
@@ -248,5 +325,61 @@ options     head
         // vとwが同値か判定
         bool isSame(long long int v, long long int w) {
             return root(v) == root(w);
+        }
+    };${0}
+
+snippet     segment_tree
+abbr        segment_tree<Mnd>
+options     head
+    //セグメント木
+    // ref:https://ei1333.github.io/luzhiled/snippets/structure/segment-tree.html
+    template <typename Mnd>
+    struct segment_tree {
+        int n;
+        vector<Mnd> data;
+        function<Mnd(Mnd, Mnd)> op;
+        Mnd e;
+        //サイズだけ指定して初期化
+        segment_tree(int sz, function<Mnd(Mnd, Mnd)> f, Mnd a) : op(f), e(a) {
+            n = 1;
+            while (n < sz) n *= 2;
+            data.assign(n * 2, e);
+        }
+        // vectorで要素を指定して初期化
+        segment_tree(vector<Mnd> v, function<Mnd(Mnd, Mnd)> f, Mnd a)
+            : op(f), e(a) {
+            n = 1;
+            while (n < (int)v.size()) n *= 2;
+            data.assign(n * 2, e);
+            for (int i = 0; i < (int)v.size(); i++) {
+                *this[i] = v[i];
+            }
+        }
+        //参照渡しなので代入とかもできる
+        Mnd& operator[](const int& k) {
+            return data[k + n];
+        }
+        //木を構築 O(n)
+        void build() {
+            for (int i = n - 1; i > 0; i--) {
+                data[i] = op(data[2 * i], data[2 * i + 1]);
+            }
+        }
+        //更新しつつ木を再構築 O(log n)
+        void update(int k, Mnd x) {
+            *this[k] = x;
+            k = (k + n) / 2;
+            while (k > 0) {
+                data[k] = f(data[2 * k], data[2 * k + 1]);
+            }
+        }
+        //[a,b)でのクエリに答える　O(log n)
+        Mnd query(int a, int b) const {
+            Mnd l = e, r = e;
+            for (a += n, b += n; a < b; a /= 2, b /= 2) {
+                if (a % 2 == 1) l = op(l, data[a++]);
+                if (b % 2 == 1) r = op(r, data[--b]);
+            }
+            return op(l, r);
         }
     };${0}
