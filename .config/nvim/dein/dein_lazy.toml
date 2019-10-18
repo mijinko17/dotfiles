@@ -6,13 +6,11 @@ repo = 'Shougo/deoplete.nvim'
 on_event = 'InsertEnter'
 hook_add='''
 let g:deoplete#enable_at_startup = 1
-"call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
 '''
 
 #スニペット
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
-#depends = ['neosnippet-snippets', 'context_filetype.vim']
 depends = ['neosnippet-snippets']
 on_event = 'InsertCharPre'
 on_ft = 'snippet'
@@ -32,12 +30,6 @@ imap <expr><CR>
 command Snip :NeoSnippetEdit
 "スニペットの場所を指定
 let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-"スニペファイルのソフトタブを全部硬くする
-command! Hard call s:soft_hard()
-function! s:soft_hard()
-  set noexpandtab
-  retab!
-endfunction
 '''
 
 #基本のスニペット入ってるやつ
@@ -47,7 +39,7 @@ repo = 'Shougo/neosnippet-snippets'
 [[plugins]]
 repo = 'Shougo/deoplete-clangx'
 depends=['Shougo/deoplete.nvim']
-on_event = 'InsertCharPre'
+on_ft = 'cpp'
 hook_add = '''
 "" Change clang binary path
 "call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
@@ -55,32 +47,34 @@ hook_add = '''
 "" Change clang options
 "call deoplete#custom#var('clangx', 'default_c_options', '')
 "call deoplete#custom#var('clangx', 'default_cpp_options', '')
+"call deoplete#custom#var('omni', 'input_patterns', {
+"          \ 'tex': g:vimtex#re#deoplete
+"          \})
 '''
 
 [[plugins]]
 repo = 'lervag/vimtex'
 on_ft = 'tex'
 hook_post_source = '''
-    let g:vimtex_compiler_latexmk = {
-          \ 'background': 1,
-          \ 'build_dir': '',
-          \ 'continuous': 1,
-          \ 'options': [
-          \    '-pdfdvi',
-          \    '-verbose',
-          \    '-file-line-error',
-          \    '-synctex=1',
-          \    '-interaction=nonstopmode',
-          \],
-          \}
-    
-    let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-    let g:vimtex_view_general_options = '@line @pdf @tex'
-    " texのconcealを無効化　有効だとバチクソ見にくい
-    "let g:tex_conceal=''
-	call deoplete#custom#var('omni', 'input_patterns', {
-	          \ 'tex': g:vimtex#re#deoplete
-	          \})
+let g:vimtex_compiler_latexmk = {
+      \ 'background': 1,
+      \ 'build_dir': '',
+      \ 'continuous': 1,
+      \ 'options': [
+      \    '-pdfdvi',
+      \    '-verbose',
+      \    '-file-line-error',
+      \    '-synctex=1',
+      \    '-interaction=nonstopmode',
+      \],
+      \}
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '@line @pdf @tex'
+" texのconcealを無効化　有効だとバチクソ見にくい
+"let g:tex_conceal=''
+call deoplete#custom#var('omni', 'input_patterns', {
+          \ 'tex': g:vimtex#re#deoplete
+          \})
 command! Cp :VimtexCompile
 '''
 
@@ -106,3 +100,13 @@ let g:previm_open_cmd = 'open -a Safari'
 " ctrl pでプレビュー
 nnoremap <silent> <C-p> :PrevimOpen<CR>
 '''
+
+#[[plugins]]
+#repo = 'justmao945/vim-clang'
+#on_ft = 'cpp'
+#hook_add = '''
+#let g:clang_cpp_options = '-std=c++1z -stdlib=libc++'
+#let g:clang_format_auto = 1
+#let g:clang_format_style = 'Google'
+#let g:clang_check_syntax_auto = 1
+#'''

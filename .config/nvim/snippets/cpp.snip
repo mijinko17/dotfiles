@@ -172,20 +172,30 @@ snippet     cumulative_sum
 abbr        cumulative_sum
 options     head
     //累積和
+    // vectorっぽく使う
+    template <typename T>
     struct cumulative_sum {
-        // data[i]:[0,i)の和
-        vector<long long int> data;
-        //コンストラクタ O(n)
-        template <typename T>
-        cumulative_sum(vector<T>& v) {
-            data.assign(v.size() + 1, 0);
-            for (int i = 0; i < (int)v.size(); i++) {
-                data[i + 1] = data[i] + v[i];
+        // data[i]:元の数列
+        vector<T> data;
+        // sum[i]:[0,i)の和
+        vector<long long int> sum;
+        //要素数を指定して初期化
+        cumulative_sum(const int n) {
+            data.assign(n, 0);
+        }
+        T& operator[](const int k) {
+            return data[k];
+        }
+        // dataに基づいてsumを構築
+        void build() {
+            sum.assign(data.size() + 1, 0);
+            for (int i = 0; i < (int)data.size(); i++) {
+                sum[i + 1] = sum[i] + data[i];
             }
         }
         //[a,b)の和を求める
-        long long int sum(long long int a, long long int b) {
-            return data[b] - data[a];
+        long long int query(const int a, const int b) {
+            return sum[b] - sum[a];
         }
     };${0}
 
@@ -265,6 +275,78 @@ options     head
             bfs.pop();
         }
         return true;
+    }${0}
+
+snippet     edge
+abbr        edge
+options     head
+    //ただの辺
+    struct edge {
+        using lint = long long int;
+        int to;
+        lint cost;
+        //引数一つの時は距離1
+        edge(int t, lint c = 1) : to(t), cost(c) {
+        }
+    };${0}
+
+snippet     farest
+abbr        calc farest vartex,depend:edge
+alias       tree_farest
+options     head
+    // fromからもっとも遠い頂点(second)とその距離(first)を求める
+    // depend:edge
+    pair<long long int, int> tree_farest(vector<vector<edge>>& g, int from,
+                                         int par) {
+        using lint = long long int;
+        pair<lint, int> res = {0, from};
+        for (int i = 0; i < (int)g[from].size(); i++) {
+            if (g[from][i].to == par) continue;
+            pair<lint, int> sub = tree_farest(g, g[from][i].to, from);
+            sub.first += g[from][i].cost;
+            res = max(res, sub);
+        }
+        return res;
+    }${0}
+
+snippet     diameter
+abbr        depend:edge,farest
+alias       tree_diameter
+options     head
+    //木の直径
+    // depend:edge,tree_farest
+    long long int tree_diameter(vector<vector<edge>>& g) {
+        pair<long long int, int> temp = tree_farest(g, 0, -1);
+        return tree_farest(g, temp.second, -1).first;
+    }${0}
+
+snippet     dijkstra
+abbr        depend:edge
+options     head
+    // dijkstra
+    // depend:edge
+    vector<long long int> dijkstra(vector<vector<edge>>& g, int start) {
+        using lint = long long int;
+        vector<lint> res(g.size(), LLONG_MAX);
+        res[start] = 0;
+        // first:距離、second:行き先
+        priority_queue<pair<lint, lint>, vector<pair<lint, lint>>,
+                       greater<pair<lint, lint>>>
+            pq;
+        pq.push({0, start});
+        while (!pq.empty()) {
+            lint dist = pq.top().first, now = pq.top().second;
+            pq.pop();
+            if (res[now] < dist) continue;
+            for (int i = 0; i < (int)g[now].size(); i++) {
+                edge e = g[now][i];
+                if (res[e.to] > res[now] + e.cost) {
+                    res[e.to] = res[now] + e.cost;
+                    pq.push(make_pair(res[e.to], e.to));
+                }
+            }
+        }
+        return res;
     }${0}
 
 snippet     circle

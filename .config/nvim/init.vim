@@ -45,7 +45,8 @@ inoremap "" ""<Left>
 "clang-format{
 function! s:clang_format()
   let now_line = line(".")
-  let clang_format_option="\"{ BasedOnStyle: Google, IndentWidth: 4 ,AllowShortFunctionsOnASingleLine: None }\""
+  let clang_format_option="\"{ BasedOnStyle: Google, IndentWidth: 4 ,AllowShortFunctionsOnASingleLine: None}\""
+"  let clang_format_option="\"{ BasedOnStyle: Google, IndentWidth: 4 ,AllowShortFunctionsOnASingleLine: None ,AlignConsecutiveDeclarations: true}\""
   exec ":%! clang-format -style=".clang_format_option
   exec ":" . now_line
 endfunction
@@ -107,5 +108,6 @@ set softtabstop=4
 set shiftwidth=4
 " 改行時に次の行のインデントを調整
 set smartindent
-set autoindent
+"set autoindent
 "}
+command! Cp :VimtexCompile
