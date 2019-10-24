@@ -1,4 +1,4 @@
-cd ~/program/competitive-programming/Atcoder/cpp/main
+cd ~/program/competitive-programming/Atcoder/test
 if [ "$1" != "" ]; then
 	nvim $1.cpp
 else
