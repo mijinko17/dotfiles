@@ -10,6 +10,11 @@ options     head
         ${0}
     }
 
+snippet     if()
+abbr        not use {}
+options     head
+    if (${1}) ${0}
+
 snippet     vector
 abbr        vector<>
 options     word
@@ -346,6 +351,56 @@ options     head
                 }
             }
         }
+        return res;
+    }${0}
+
+snippet     warshall_floyd
+abbr        void warshall_floyd
+alias       wf
+options     head
+    // warshall_floyd
+    // dは隣接行列(long long intを使うこと)
+    void warshall_floyd(vector<vector<long long int>>& d) {
+        long long int n = d.size();
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (d[i][k] == LLONG_MAX || d[k][j] == LLONG_MAX) continue;
+                    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+                }
+            }
+        }
+    }${0}
+
+snippet     topological sort
+abbr        vector<int> topological_sort
+options     head
+    // トポロジカルソート　O(V+E)
+    // depend:edge
+    // 失敗した場合res[0]=-1
+    vector<int> tolological_sort(vector<vector<edge>>& g) {
+        int n = g.size();
+        vector<int> res;
+        vector<int> indeg(n, 0);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < (int)g[i].size(); j++) {
+                indeg[g[i][j].to]++;
+            }
+        }
+        stack<int> s;
+        for (int i = 0; i < n; i++) {
+            if (indeg[i] == 0) s.push(i);
+        }
+        while (!s.empty()) {
+            int now = s.top();
+            s.pop();
+            res.push_back(now);
+            for (int i = 0; i < (int)g[now].size(); i++) {
+                indeg[g[now][i].to]--;
+                if (indeg[g[now][i].to] == 0) s.push(g[now][i].to);
+            }
+        }
+        if ((int)res.size() < n) res[0] = -1;
         return res;
     }${0}
 
