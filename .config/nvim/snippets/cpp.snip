@@ -2,7 +2,7 @@ snippet     header
 abbr        include+main
 options     head
     #include <bits/stdc++.h>
-    #define all(v) v.begin(), v.end()
+    #define all(v) (v).begin(), (v).end()
     typedef long long int lint;
     using namespace std;
 
@@ -14,6 +14,11 @@ snippet     if()
 abbr        not use {}
 options     head
     if (${1}) ${0}
+
+snippet     for()
+abbr        not use {}
+options     head
+    for (int ${1:i} = 0; $1 < ${2}; $1++) ${0}
 
 snippet     vector
 abbr        vector<>
@@ -70,6 +75,11 @@ abbr        include <bits/stdc++.h>
 options     head
     #include <bits/stdc++.h>
 
+snippet     setprecision
+abbr        doubleの時用
+options     word
+    setprecision(${1})${0}
+
 snippet     powint
 abbr        calc a^n
 options     head
@@ -85,6 +95,25 @@ options     head
                 return temp * temp * a;
             }
         }
+    }${0}
+
+snippet     pow_mod
+abbr        calc a^n mod p
+options     head
+    // a^n mod pを計算　O(log n)
+    long long int pow_mod(long long int a, long long int n, long long int p) {
+        if (n == 0) return 1;
+        long long int temp = pow_mod(a, n / 2, p);
+        return n & 1 ? (((temp * temp) % p) * a) % p : (temp * temp) % p;
+    }${0}
+
+snippet     inv_mod
+abbr        inverse element in Z_p
+options     head
+    // Z_pでのaの逆元を計算 O(log p)
+    // depend:pow_mod
+    long long int inv_mod(long long int a, long long int p) {
+        return pow_mod(a, p - 2, p);
     }${0}
 
 snippet     bit
@@ -118,6 +147,30 @@ options     head
         return res;
     }${0}
 
+snippet     combination_mod
+abbr        struct:calc nCr by n! table
+options     head
+    // 階乗テーブルを作ってコンビネーションをキビキビ計算する
+    // depend:inv_mod
+    struct combination_mod {
+        using lint = long long int;
+        int sz;
+        vector<lint> data;
+        lint mod;
+        combination_mod(int _sz, lint _mod) : sz(_sz), mod(_mod) {
+            data.assign(sz + 1, 1);
+            for (int i = 1; i <= sz; i++) data[i] = (data[i - 1] * i) % mod;
+        }
+        // nCrを計算 O(log mod)
+        lint query(int n, int r) {
+            lint res = 1;
+            res = (res * data[n]) % mod;
+            res = (res * inv_mod(data[r], mod)) % mod;
+            res = (res * inv_mod(data[n - r], mod)) % mod;
+            return res;
+        }
+    };${0}
+
 snippet     pf_vec
 abbr        prime factorization with vector
 alias       prime factorization
@@ -149,57 +202,50 @@ options     head
             }
         if (n != 1) res[n]++;
         return res;
-    }
+    }${0}
 
-snippet     inv_p
-abbr        inverse element in Z_p
+snippet     lis
+abbr        lis 引数1つだと広義単調増加(=非減少)
 options     head
-    // a^n mod pを計算　O(log n)
-    long long int pow_p(long long int a, long long int n, long long int p) {
-        if (n == 0) {
-            return 1;
-        } else {
-            long long int temp = pow_p(a, n / 2, p);
-            if (n % 2 == 0) {
-                return (temp * temp) % p;
-            } else {
-                return (((temp * temp) % p) * a) % p;
-            }
+    // 最長非減少部分列の長さ
+    // type==false<=>狭義単調増加列の長さ
+    template <typename T>
+    int lis(const vector<T>& a, bool type = true) {
+        int n = a.size();
+        vector<long long int> dp(n, LLONG_MAX);
+        for (int i = 0; i < n; i++) {
+            auto itr = type ? upper_bound(dp.begin(), dp.end(), a[i])
+                            : lower_bound(dp.begin(), dp.end(), a[i]);
+            *itr = a[i];
         }
-    }
-
-    // Z_pでのaの逆元を計算 O(log p)
-    long long int inv_p(long long int a, long long int p) {
-        return pow_p(a, p - 2, p);
+        return lower_bound(dp.begin(), dp.end(), LLONG_MAX) - dp.begin();
     }${0}
 
 snippet     cumulative_sum
 abbr        cumulative_sum
 options     head
-    //累積和
-    // vectorっぽく使う
-    template <typename T>
+    // 累積和
     struct cumulative_sum {
+        using lint = long long int;
+        int sz;
         // data[i]:元の数列
-        vector<T> data;
-        // sum[i]:[0,i)の和
-        vector<long long int> sum;
-        //要素数を指定して初期化
-        cumulative_sum(const int n) {
-            data.assign(n, 0);
+        vector<lint> data;
+        // cum[i]:[0,i)の和
+        vector<lint> sum;
+        // 要素数を指定して初期化
+        cumulative_sum(const int _sz) : sz(_sz) {
+            data.assign(sz, 0);
+            sum.assign(sz + 1, 0);
         }
-        T& operator[](const int k) {
+        lint& operator[](const int k) {
             return data[k];
         }
         // dataに基づいてsumを構築
         void build() {
-            sum.assign(data.size() + 1, 0);
-            for (int i = 0; i < (int)data.size(); i++) {
-                sum[i + 1] = sum[i] + data[i];
-            }
+            for (int i = 0; i < sz; i++) sum[i + 1] = sum[i] + data[i];
         }
-        //[a,b)の和を求める
-        long long int query(const int a, const int b) {
+        // [a,b)の和を求める
+        lint query(const int a, const int b) {
             return sum[b] - sum[a];
         }
     };${0}
@@ -209,22 +255,26 @@ abbr        cumulative sum 2D
 options     head
     //二次元累積和
     struct cumulative_sum_2d {
-        vector<vector<long long int>> data;
-        //コンストラクタ
-        template <typename T>
-        cumulative_sum_2d(vector<vector<T>> &v) {
-            data = vector<vector<long long int>>(
-                v.size() + 1, vector<long long int>(v[0].size() + 1, 0));
-            for (int i = 0; i < (int)v.size(); i++) {
-                for (int j = 0; j < (int)v[0].size(); j++) {
-                    data[i + 1][j + 1] =
-                        data[i + 1][j] + data[i][j + 1] - data[i][j] + v[i][j];
-                }
-            }
+        using lint = long long int;
+        int sz;
+        vector<vector<lint>> data;
+        vector<vector<lint>> sum;
+        cumulative_sum_2d(const int _sz) : sz(_sz) {
+            data.assign(sz, vector<lint>(sz));
+            sum.assign(sz + 1, vector<lint>(sz + 1));
+        }
+        vector<lint>& operator[](const int k) {
+            return data[k];
+        }
+        void build() {
+            for (int i = 0; i < sz; i++)
+                for (int j = 0; j < sz; j++)
+                    sum[i + 1][j + 1] =
+                        sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + data[i][j];
         }
         //[a,b)×[c,d)の和を計算
-        long long int sum(int a, int b, int c, int d) {
-            return data[b][d] - data[b][c] - data[a][d] + data[a][c];
+        lint query(const int a, const int b, const int c, const int d) const {
+            return sum[b][d] - sum[b][c] - sum[a][d] + sum[a][c];
         }
     };${0}
 
@@ -354,6 +404,33 @@ options     head
         return res;
     }${0}
 
+snippet     bellman_ford
+abbr        depend:edge
+options     head
+    // Bellman-Ford
+    // depend:edge
+    // 到達不可能:LLONG_MAX、負閉路を経由可能:LLONG_MIN
+    vector<lint> bellman_ford(vector<vector<edge>>& g, int s) {
+        int n = g.size();
+        vector<long long int> res(n, LLONG_MAX);
+        res[s] = 0;
+        for (int i = 0; i < 2 * n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (res[j] == LLONG_MAX) continue;
+                for (int k = 0; k < (int)g[j].size(); k++) {
+                    int c = g[j][k].cost, dest = g[j][k].to;
+                    if (i < n - 1) {
+                        res[dest] = min(res[dest], res[j] + c);
+                    } else {
+                        if (res[j] == LLONG_MIN || res[dest] > res[j] + c)
+                            res[dest] = LLONG_MIN;
+                    }
+                }
+            }
+        }
+        return res;
+    }${0}
+
 snippet     warshall_floyd
 abbr        void warshall_floyd
 alias       wf
@@ -400,7 +477,12 @@ options     head
                 if (indeg[g[now][i].to] == 0) s.push(g[now][i].to);
             }
         }
-        if ((int)res.size() < n) res[0] = -1;
+        //失敗時の処理
+        if ((int)res.size() < n) {
+            // vectorが空かもしれないので適当に入れる
+            res.push_back(-1);
+            res[0] = -1;
+        }
         return res;
     }${0}
 
@@ -472,51 +554,111 @@ options     head
     // ref:https://ei1333.github.io/luzhiled/snippets/structure/segment-tree.html
     template <typename Mnd>
     struct segment_tree {
-        int n;
+        int sz;
         vector<Mnd> data;
-        function<Mnd(Mnd, Mnd)> op;
+        function<Mnd(Mnd, Mnd)> f;
         Mnd e;
         //サイズだけ指定して初期化
-        segment_tree(int sz, function<Mnd(Mnd, Mnd)> f, Mnd a) : op(f), e(a) {
-            n = 1;
-            while (n < sz) n *= 2;
-            data.assign(n * 2, e);
-        }
-        // vectorで要素を指定して初期化
-        segment_tree(vector<Mnd> v, function<Mnd(Mnd, Mnd)> f, Mnd a)
-            : op(f), e(a) {
-            n = 1;
-            while (n < (int)v.size()) n *= 2;
-            data.assign(n * 2, e);
-            for (int i = 0; i < (int)v.size(); i++) {
-                *this[i] = v[i];
-            }
+        segment_tree(int _sz, function<Mnd(Mnd, Mnd)> _f, Mnd _e) : f(_f), e(_e) {
+            sz = 1;
+            while (sz < _sz) sz <<= 1;
+            data.assign(sz * 2, e);
         }
         //参照渡しなので代入とかもできる
         Mnd& operator[](const int& k) {
-            return data[k + n];
+            return data[k + sz];
         }
         //木を構築 O(n)
         void build() {
-            for (int i = n - 1; i > 0; i--) {
-                data[i] = op(data[2 * i], data[2 * i + 1]);
-            }
+            for (int i = sz - 1; i > 0; i--)
+                data[i] = f(data[2 * i], data[2 * i + 1]);
         }
         //更新しつつ木を再構築 O(log n)
         void update(int k, Mnd x) {
-            *this[k] = x;
-            k = (k + n) / 2;
-            while (k > 0) {
-                data[k] = f(data[2 * k], data[2 * k + 1]);
-            }
+            data[k += sz] = x;
+            while (k >>= 1) data[k] = f(data[2 * k], data[2 * k + 1]);
         }
         //[a,b)でのクエリに答える　O(log n)
         Mnd query(int a, int b) const {
             Mnd l = e, r = e;
-            for (a += n, b += n; a < b; a /= 2, b /= 2) {
-                if (a % 2 == 1) l = op(l, data[a++]);
-                if (b % 2 == 1) r = op(r, data[--b]);
+            for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+                if (a & 1) l = f(l, data[a++]);
+                if (b & 1) r = f(r, data[--b]);
             }
-            return op(l, r);
+            return f(l, r);
+        }
+    };${0}
+
+snippet     segment_tree_lazy
+abbr        segment_tree(n,f,g,h,e,id)
+options     head
+    // 遅延セグメント木
+    // ref:https://ei1333.github.io/luzhiled/snippets/structure/segment-tree.html
+    template <typename Monoid, typename OperatorMonoid = Monoid>
+    struct segment_tree_lazy {
+        using F = function<Monoid(Monoid, Monoid)>;
+        using G = function<Monoid(Monoid, OperatorMonoid)>;
+        using H = function<OperatorMonoid(OperatorMonoid, OperatorMonoid)>;
+        int sz, height;
+        vector<Monoid> data;
+        vector<OperatorMonoid> lazy;
+        const F f;
+        const G g;
+        const H h;
+        const Monoid e;
+        const OperatorMonoid id;
+        segment_tree_lazy(int _sz, const F _f, const G _g, const H _h,
+                          const Monoid& _e, const OperatorMonoid _id)
+            : f(_f), g(_g), h(_h), e(_e), id(_id) {
+            sz = 1, height = 0;
+            while (sz < _sz) sz <<= 1, height++;
+            data.assign(2 * sz, e);
+            lazy.assign(2 * sz, id);
+        }
+        void set(const int k, const Monoid& x) {
+            data[k + sz] = x;
+        }
+        Monoid operator[](const int& k) {
+            return query(k, k + 1);
+        }
+        void build() {
+            for (int i = sz - 1; i > 0; i--)
+                data[i] = f(data[i * 2], data[i * 2 + 1]);
+        }
+        Monoid reflect(int k) {
+            return lazy[k] == id ? data[k] : g(data[k], lazy[k]);
+        }
+        void propagate(int k) {
+            if (lazy[k] != id) {
+                lazy[2 * k] = h(lazy[2 * k], lazy[k]);
+                lazy[2 * k + 1] = h(lazy[2 * k + 1], lazy[k]);
+                data[k] = reflect(k);
+                lazy[k] = id;
+            }
+        }
+        void recalc(int k) {
+            while (k >>= 1) data[k] = f(reflect(2 * k), reflect(2 * k + 1));
+        }
+        // 自分より上にあるやつ全てに対して上から順にpropagate
+        void thrust(int k) {
+            for (int i = height; i > 0; i--) propagate(k >> i);
+        }
+        // [a,b)にxを作用させる
+        void update(int a, int b, const OperatorMonoid& x) {
+            thrust(a += sz), thrust(b += sz - 1);
+            for (int l = a, r = b + 1; l < r; l >>= 1, r >>= 1) {
+                if (l & 1) lazy[l] = h(lazy[l], x), ++l;
+                if (r & 1) --r, lazy[r] = h(lazy[r], x);
+            }
+            recalc(a), recalc(b);
+        }
+        Monoid query(int a, int b) {
+            thrust(a += sz), thrust(b += sz - 1);
+            Monoid L = e, R = e;
+            for (int l = a, r = b + 1; l < r; l >>= 1, r >>= 1) {
+                if (l & 1) L = f(L, reflect(l++));
+                if (r & 1) R = f(reflect(--r), R);
+            }
+            return f(L, R);
         }
     };${0}
