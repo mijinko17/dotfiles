@@ -1,7 +1,3 @@
-#ディレクトリ構造を見るやつ
-[[plugins]]
-repo = 'scrooloose/nerdtree'
-
 #カラースキーム
 [[plugins]]
 repo = 'kristijanhusak/vim-hybrid-material'
@@ -22,58 +18,23 @@ if (has("termguicolors"))
 endif
 '''
 
-##カラースキーム
-#[[plugins]]
-#repo = 'morhetz/gruvbox'
-#on_event='VimEnter'
-#hook_add='''
-#set background=dark
-#colorscheme gruvbox
-#"autocmd MyAutoCmd VimEnter * colorscheme hybrid
-#if (has("nvim"))
-#  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-#  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-#endif
-#"For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-#"Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-#" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-#if (has("termguicolors"))
-#  set termguicolors
-#endif
-#'''
-
-#tomlファイルのシンタックスハイライト
 [[plugins]]
-repo = 'cespare/vim-toml'
-#on_ft=['toml']	本当はこれ入れたいが入れるとプラグインが動かない
-
-#deopleteのために必要その1
-[[plugins]]
-repo = 'roxma/vim-hug-neovim-rpc'
-on_if = '!has("nvim")'
-
-#deopleteのために必要その2
-[[plugins]]
-repo = 'roxma/nvim-yarp'
-
-#構文チェック
-#lazyにしたい気もするが,変なタイミングでサインコラムがデュンってなってほしくないためここ
-[[plugins]]
-repo = 'w0rp/ale'
-on_event = 'InsertEnter'
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+depends = ['deoplete.nvim']
+build = 'bash install.sh'
 hook_add = '''
-"シンボルカラムの色を背景に揃える
-highlight clear SignColumn
-" シンボルカラム表示しっぱなし
-let g:ale_sign_column_always = 1
-" ステータスラインにエラーの数を常に表示
-let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
-" 使うlinterの選択
-let g:ale_linters = {'cpp': ['gcc'], 'python': ['flake8'], 'javascript': ['eslint']}
-" ↑で指定したlinter以外を勝手に使わないようにする
-let g:ale_linters_explicit = 1
-" gccのオプション
-let g:ale_cpp_gcc_executable = 'gcc'
+set hidden
+let g:LanguageClient_serverCommands = {
+      \ 'cpp': ['clangd','-header-insertion=never'],
+      \ }
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_hasSnippetSupport=1
+
+set completefunc=LanguageClient#complete
+
+nnoremap K :call LanguageClient#textDocument_hover()<CR>
+nnoremap F :call LanguageClient#textDocument_formatting()<CR>
 '''
 
 [[plugins]]
@@ -99,5 +60,7 @@ let g:quickrun_config.python = {
 \ }
 '''
 
+#tomlファイルのシンタックスハイライト
 [[plugins]]
-repo = 'Shougo/neoinclude.vim'
+repo = 'cespare/vim-toml'
+#on_ft=['toml']	本当はこれ入れたいが入れるとプラグインが動かない

@@ -1,6 +1,3 @@
-
-#python3、pip3によるpyvimのインスコが必要(githubのrequirmentをよく読む)
-#homebrewでpython3入れるとpip3入らなくてキレそう(https://teratail.com/questions/126801)
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
 on_event = 'InsertEnter'
@@ -17,40 +14,25 @@ on_ft = 'snippet'
 hook_add='''
 " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
 imap <expr><TAB>
-	 \ pumvisible() ? "\<C-n>" :
+	 \ pumvisible() ? "\<C-j>" :
 	 \ neosnippet#expandable_or_jumpable() ?
 	 \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 	 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 " エンターキーでスニペット挿入or補完確定orポップアップ閉じる
 imap <expr><CR>
-	\ (pumvisible() && neosnippet#expandable()) ? "\<Plug>(neosnippet_expand)" :
+	\ (pumvisible() && neosnippet#expandable()) ? "\<C-y>" :
 	\ pumvisible() ? deoplete#close_popup() :"\<CR>"
 "ユーザースニペットのやつ呼び出すコマンド長スギ
 command Snip :NeoSnippetEdit
 "スニペットの場所を指定
 let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+let g:neosnippet#enable_complete_done = 1
 '''
 
 #基本のスニペット入ってるやつ
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
-
-[[plugins]]
-repo = 'Shougo/deoplete-clangx'
-depends=['Shougo/deoplete.nvim']
-on_ft = 'cpp'
-hook_add = '''
-"" Change clang binary path
-"call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
-"
-"" Change clang options
-"call deoplete#custom#var('clangx', 'default_c_options', '')
-"call deoplete#custom#var('clangx', 'default_cpp_options', '')
-"call deoplete#custom#var('omni', 'input_patterns', {
-"          \ 'tex': g:vimtex#re#deoplete
-"          \})
-'''
 
 [[plugins]]
 repo = 'lervag/vimtex'
@@ -78,17 +60,6 @@ call deoplete#custom#var('omni', 'input_patterns', {
 command! Cp :VimtexCompile
 '''
 
-#[[plugins]]
-#repo = 'rhysd/vim-clang-format'
-#on_ft = 'cpp'
-#hook_add = '''
-#let g:clang_format#auto_format=1
-#let g:clang_format#style_options = {
-#            \ 'BasedOnStyle' : 'WebKit',
-#            \ 'UseTab' : 'Always',
-#            \ }
-#'''
-
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
 
@@ -100,13 +71,3 @@ let g:previm_open_cmd = 'open -a Safari'
 " ctrl pでプレビュー
 nnoremap <silent> <C-p> :PrevimOpen<CR>
 '''
-
-#[[plugins]]
-#repo = 'justmao945/vim-clang'
-#on_ft = 'cpp'
-#hook_add = '''
-#let g:clang_cpp_options = '-std=c++1z -stdlib=libc++'
-#let g:clang_format_auto = 1
-#let g:clang_format_style = 'Google'
-#let g:clang_check_syntax_auto = 1
-#'''
