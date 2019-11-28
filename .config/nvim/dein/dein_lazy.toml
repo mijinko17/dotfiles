@@ -1,73 +1,87 @@
-#[[plugins]]
-#repo = 'Shougo/deoplete.nvim'
-#on_event = 'InsertEnter'
-#hook_add='''
-#"let g:deoplete#enable_at_startup = 1
-#'''
-#
-##スニペット
-#[[plugins]]
-#repo = 'Shougo/neosnippet.vim'
-#depends = ['neosnippet-snippets']
-#on_event = 'InsertCharPre'
-#on_ft = 'snippet'
-#hook_add='''
-#" タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
-#imap <expr><TAB>
-#	 \ pumvisible() ? "\<C-j>" :
-#	 \ neosnippet#expandable_or_jumpable() ?
-#	 \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-#smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-#	 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-#" エンターキーでスニペット挿入or補完確定orポップアップ閉じる
-#imap <expr><CR>
-#	\ (pumvisible() && neosnippet#expandable()) ? "\<C-y>" :
-#	\ pumvisible() ? deoplete#close_popup() :"\<CR>"
-#"ユーザースニペットのやつ呼び出すコマンド長スギ
-#command Snip :NeoSnippetEdit
-#"スニペットの場所を指定
-#let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-#let g:neosnippet#enable_complete_done = 1
-#'''
-#
-##基本のスニペット入ってるやつ
-#[[plugins]]
-#repo = 'Shougo/neosnippet-snippets'
-#
-#[[plugins]]
-#repo = 'lervag/vimtex'
-#on_ft = 'tex'
-#hook_post_source = '''
-#let g:vimtex_compiler_latexmk = {
-#      \ 'background': 1,
-#      \ 'build_dir': '',
-#      \ 'continuous': 1,
-#      \ 'options': [
-#      \    '-pdfdvi',
-#      \    '-verbose',
-#      \    '-file-line-error',
-#      \    '-synctex=1',
-#      \    '-interaction=nonstopmode',
-#      \],
-#      \}
-#let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-#let g:vimtex_view_general_options = '@line @pdf @tex'
-#" texのconcealを無効化　有効だとバチクソ見にくい
-#"let g:tex_conceal=''
-#call deoplete#custom#var('omni', 'input_patterns', {
-#          \ 'tex': g:vimtex#re#deoplete
-#          \})
-#command! Cp :VimtexCompile
-#'''
-#
-#[[plugins]]
-#repo = 'plasticboy/vim-markdown'
-#
-#[[plugins]]
-#repo = 'kannokanno/previm'
-#hook_add = '''
-#autocmd BufRead,BufNewFile *.md set filetype=markdown
-#let g:previm_open_cmd = 'open -a Safari'
-#" ctrl pでプレビュー
-#nnoremap <silent> <C-p> :PrevimOpen<CR>
-#'''
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+on_event = 'InsertEnter'
+hook_add='''
+let g:deoplete#enable_at_startup = 1
+'''
+
+#スニペット
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['neosnippet-snippets']
+on_event = 'InsertCharPre'
+on_ft = 'snippet'
+hook_add='''
+" タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
+imap <expr><TAB>
+            \ pumvisible() ? "\<Down>" :
+            \ neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" エンターキーでスニペット挿入or補完確定orポップアップ閉じる
+imap <expr><CR>
+            \ (pumvisible() && neosnippet#expandable()) ? "\<C-y>" :
+            \ pumvisible() ? deoplete#close_popup() :"\<CR>"
+"ユーザースニペットのやつ呼び出すコマンド長スギ
+command Snip :NeoSnippetEdit
+"スニペットの場所を指定
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+"languageclientでスニペット機能(関数の引数補完)を使うのに必要
+let g:neosnippet#enable_complete_done = 1
+'''
+
+#基本のスニペット入ってるやつ
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+#基本のスニペット入ってるやつ
+[[plugins]]
+repo = 'rhysd/vim-clang-format'
+on_ft = 'cpp'
+hook_add='''
+let g:clang_format#auto_format = 1
+let g:clang_format#style_options = {
+            \ "BasedOnStyle" : "Google",
+            \ "IndentWidth" : 4,
+            \ "AllowShortFunctionsOnASingleLine" : "None",
+            \ }
+'''
+
+[[plugins]]
+repo = 'lervag/vimtex'
+on_ft = 'tex'
+hook_post_source = '''
+let g:vimtex_compiler_latexmk = {
+      \ 'background': 1,
+      \ 'build_dir': '',
+      \ 'continuous': 1,
+      \ 'options': [
+      \    '-pdfdvi',
+      \    '-verbose',
+      \    '-file-line-error',
+      \    '-synctex=1',
+      \    '-interaction=nonstopmode',
+      \],
+      \}
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '@line @pdf @tex'
+" texのconcealを無効化　有効だとバチクソ見にくい
+"let g:tex_conceal=''
+call deoplete#custom#var('omni', 'input_patterns', {
+          \ 'tex': g:vimtex#re#deoplete
+          \})
+command! Cp :VimtexCompile
+'''
+
+[[plugins]]
+repo = 'plasticboy/vim-markdown'
+
+[[plugins]]
+repo = 'kannokanno/previm'
+hook_add = '''
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+let g:previm_open_cmd = 'open -a Safari'
+" ctrl pでプレビュー
+nnoremap <silent> <C-p> :PrevimOpen<CR>
+'''
