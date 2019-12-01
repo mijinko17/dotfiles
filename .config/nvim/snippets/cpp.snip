@@ -10,50 +10,15 @@ options     head
         ${0}
     }
 
-snippet     if()
+snippet     ifshort
 abbr        not use {}
 options     head
     if (${1}) ${0}
 
-snippet     for()
+snippet     forshort
 abbr        not use {}
 options     head
     for (int ${1:i} = 0; $1 < ${2}; $1++) ${0}
-
-snippet     vector
-abbr        vector<>
-options     word
-    vector<${1}>
-
-snippet     queue
-abbr        queue<>
-options     word
-    queue<${1}>
-
-snippet     deque
-abbr        deque<>
-options     word
-    deque<${1}>
-
-snippet     priority_queue
-abbr        priority_queue<>
-options     word
-    priority_queue<${1}>
-
-snippet     unordered_map
-abbr        unordered_map<>
-options     word
-    unordered_map<${1},${2}>
-
-snippet     pair
-abbr        declare pair
-options     word
-    pair<${1},${2}>
-
-snippet     make_pair
-abbr        make_pair(,)
-options     word
-    make_pair(${1},${2})
 
 snippet     upper_bound
 abbr        xより真に値が大きいもので最小のイテレータ
