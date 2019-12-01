@@ -71,7 +71,7 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 call deoplete#custom#var('omni', 'input_patterns', {
           \ 'tex': g:vimtex#re#deoplete
           \})
-command! Cp :VimtexCompile
+command Cp :VimtexCompile
 '''
 
 [[plugins]]

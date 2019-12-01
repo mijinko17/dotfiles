@@ -91,4 +91,5 @@ if expand("%:t") =~ ".*\.tex"
   inoremap \ ;
   inoremap $ $$<Left>
 endif
+command! Cp :VimtexCompile
 "}
