@@ -1,3 +1,0 @@
-if [ "$1" != "" ]; then
-	nvim ~/.commands/$1
-fi

@@ -2,8 +2,7 @@ snippet     header
 abbr        include+main
 options     head
     #include <bits/stdc++.h>
-    #define all(v) (v).begin(), (v).end()
-    typedef long long int lint;
+    typedef long long lint;
     using namespace std;
 
     int main() {
@@ -39,6 +38,11 @@ snippet     bits
 abbr        include <bits/stdc++.h>
 options     head
     #include <bits/stdc++.h>
+
+snippet     all
+abbr        v.begin(), v.end()
+options     word
+    ${1}.begin(), $1.end()${0}
 
 snippet     getDigit
 abbr        整数の桁数

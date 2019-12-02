@@ -1,5 +1,0 @@
-mkdir -p ~/program/competitive-programming/Atcoder/ABCpy/$1
-cd ~/program/competitive-programming/Atcoder/ABCpy/$1
-if [ "$2" != "" ]; then
-	nvim $2.py
-fi
