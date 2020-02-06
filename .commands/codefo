@@ -1,0 +1,5 @@
+mkdir -p ~/program/competitive-programming/Codeforces/Round/$1/$2
+cd ~/program/competitive-programming/Codeforces/Round/$1/$2
+if [ "$3" != "" ]; then
+	nvim $3.cpp
+fi

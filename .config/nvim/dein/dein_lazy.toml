@@ -3,6 +3,8 @@ repo = 'Shougo/deoplete.nvim'
 on_event = 'InsertEnter'
 hook_add='''
 let g:deoplete#enable_at_startup = 1
+"関数補完時に画面下に出るプレビューウィンドウを非表示
+set completeopt-=preview
 '''
 
 #スニペット
@@ -44,9 +46,18 @@ let g:clang_format#auto_format = 1
 let g:clang_format#style_options = {
             \ "BasedOnStyle" : "Google",
             \ "IndentWidth" : 4,
-            \ "AllowShortFunctionsOnASingleLine" : "None",
+            \ "AllowShortFunctionsOnASingleLine" : "Empty",
             \ }
 '''
+
+
+[[plugins]]
+repo = 'prettier/vim-prettier'
+hook_add = '''
+autocmd BufWritePre *.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
+let g:prettier#config#tab_width = 4
+'''
+
 
 [[plugins]]
 repo = 'lervag/vimtex'
@@ -58,6 +69,7 @@ let g:vimtex_compiler_latexmk = {
       \ 'continuous': 1,
       \ 'options': [
       \    '-pdfdvi',
+      \    '-c',
       \    '-verbose',
       \    '-file-line-error',
       \    '-synctex=1',

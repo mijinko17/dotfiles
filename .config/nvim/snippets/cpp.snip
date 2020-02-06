@@ -9,6 +9,12 @@ options     head
         ${0}
     }
 
+snippet     async
+abbr        cinの同期切る
+options     head
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+
 snippet     ifshort
 abbr        not use {}
 options     head
@@ -23,6 +29,13 @@ snippet     foritr
 abbr        for (auto itr = v.begin(); itr !=v.end(); itr++)
 options     word
     for (auto ${1:itr} = ${2}.begin(); $1 !=$2.end(); $1++) {
+        ${0}
+    }
+
+snippet     fore
+abbr        範囲for
+options     head
+    for (auto ${1:e} : ${2}) {
         ${0}
     }
 
@@ -58,9 +71,22 @@ options     head
         return to_string(num).length();
     }
 
-snippet     ch
-abbr        update min/max
-alias       chmin,chmax
+snippet     chmin
+abbr        update min
+alias       min
+options     head
+    template <class T>
+    bool chmin(T &a, const T &b) {
+        if (a > b) {
+            a = b;
+            return 1;
+        }
+        return 0;
+    }${0}
+
+snippet     chmax
+abbr        update max
+alias       max
 options     head
     template <class T>
     bool chmax(T &a, const T &b) {
@@ -69,15 +95,23 @@ options     head
             return 1;
         }
         return 0;
-    }
-    template <class T>
-    bool chmin(T &a, const T &b) {
-        if (b < a) {
-            a = b;
-            return 1;
+    }${0}
+
+snippet     meguru
+abbr        めぐる式二分探索
+options     head
+    // めぐる式二分探索
+    template <typename T>
+    T meguru_BinarySearch(T ok, T no, function<bool(T)> isValid, T diff = 1) {
+        while (abs(ok - no) > diff) {
+            T mid = (ok + no) / 2;
+            if (isValid(mid))
+                ok = mid;
+            else
+                no = mid;
         }
-        return 0;
-    }
+        return ok;
+    }${0}
 
 snippet     setprecision
 abbr        doubleの時用
@@ -105,10 +139,11 @@ snippet     pow_mod
 abbr        calc a^n mod p
 options     head
     // a^n mod pを計算　O(log n)
-    long long int pow_mod(long long int a, long long int n, long long int p) {
+    long long pow_mod(long long a, long long n, long long p) {
         if (n == 0) return 1;
-        long long int temp = pow_mod(a, n / 2, p);
-        return n & 1 ? (((temp * temp) % p) * a) % p : (temp * temp) % p;
+        if (n & 1) return pow_mod(a, n - 1, p) * a % p;
+        long long temp = pow_mod(a, n / 2, p);
+        return temp * temp % p;
     }${0}
 
 snippet     inv_mod
@@ -116,7 +151,7 @@ abbr        inverse element in Z_p
 options     head
     // Z_pでのaの逆元を計算 O(log p)
     // depend:pow_mod
-    long long int inv_mod(long long int a, long long int p) {
+    long long inv_mod(long long a, long long p) {
         return pow_mod(a, p - 2, p);
     }${0}
 
@@ -197,18 +232,30 @@ snippet     pf_um
 abbr        prime factorization with unordered_map
 alias       prime factorization
 options     head
-    //素因数分解unordered_map版　O(√n)
+    // 素因数分解unordered_map版　O(√n)
     template <typename T>
     unordered_map<T, T> pf_um(T n) {
         unordered_map<T, T> res;
-        for (long long int i = 2; i * i <= n; i++)
-            while (n % i == 0) {
-                res[i]++;
-                n /= i;
-            }
+        for (long long i = 2; i * i <= n; i++)
+            while (n % i == 0) res[i]++, n /= i;
         if (n != 1) res[n]++;
         return res;
     }${0}
+
+snippet     eratosthenes_sieve
+abbr        エラトステネスの篩
+options     head
+    //エラトステネスの篩
+    vector<bool> eratosthenes_sieve(int n) {
+        vector<bool> res(n + 1, true);
+        res[0] = res[1] = false;
+        for (int i = 2; i * i <= n; i++) {
+            if (res[i]) {
+                for (int j = i; i * j <= n; j++) res[i * j] = false;
+            }
+        }
+        return res;
+    }
 
 snippet     lis
 abbr        lis 引数1つだと広義単調増加(=非減少)
@@ -372,14 +419,12 @@ options     head
 snippet     edge
 abbr        edge
 options     head
-    //ただの辺
+    // ただの辺
     struct edge {
-        using lint = long long int;
         int to;
-        lint cost;
-        //引数一つの時は距離1
-        edge(int t, lint c = 1) : to(t), cost(c) {
-        }
+        long long cost;
+        // 引数一つの時は距離1
+        edge(int t, long long c = 1) : to(t), cost(c) {}
     };${0}
 
 snippet     farest
@@ -410,6 +455,102 @@ options     head
     long long int tree_diameter(vector<vector<edge>>& g) {
         pair<long long int, int> temp = tree_farest(g, 0, -1);
         return tree_farest(g, temp.second, -1).first;
+    }${0}
+
+snippet     lca
+abbr        lca, 木の距離クエリ, 深さ
+options     head
+    // 木のlcaをキビキビ計算
+    // depend:edge
+    struct lowest_common_ancestor {
+        using G = vector<vector<edge>>&;
+        G g;
+        int sz;
+        int root;
+        int log;
+        vector<int> dep;
+        vector<vector<int>> parent;
+        lowest_common_ancestor(G _g, int _root)
+            : g(_g), sz(_g.size()), root(_root), dep(_g.size()) {
+            log = 1;
+            while (1 << log < sz) log++;
+            parent.assign(log, vector<int>(sz, -1));
+        }
+        // parent[0]埋め、深さ埋め
+        void dfs(int now, int p, int d) {
+            parent[0][now] = p;
+            dep[now] = d;
+            for (int i = 0; i < (int)g[now].size(); i++) {
+                int next = g[now][i].to;
+                if (next != p) dfs(next, now, d + 1);
+            }
+        }
+        // 前計算を済ませる O(nlog n)
+        void build() {
+            dfs(root, -1, 0);
+            for (int i = 1; i < log; i++) {
+                for (int j = 0; j < sz; j++) {
+                    if (parent[i - 1][j] == -1)
+                        parent[i][j] = -1;
+                    else
+                        parent[i][j] = parent[i - 1][parent[i - 1][j]];
+                }
+            }
+        }
+        // uとvのlcaを求める O(log sz)
+        int query(int u, int v) {
+            if (dep[u] > dep[v]) swap(u, v);
+            for (int i = 0; i < log; i++) {
+                if ((dep[v] - dep[u]) & (1 << i)) v = parent[i][v];
+            }
+            if (u == v) return u;
+            for (int i = log - 1; i >= 0; i--) {
+                if (parent[i][u] != parent[i][v])
+                    u = parent[i][u], v = parent[i][v];
+            }
+            return parent[0][u];
+        }
+        // 頂点の深さ
+        int depth(int u) {
+            return dep[u];
+        }
+        // uからnだけ遡る
+        int root_back(int u, int n) {
+            if (n > (1 << (log - 1))) return -1;
+            for (int i = 0; (1 << i) <= n; i++) {
+                if ((n >> i) & 1) u = parent[i][u];
+            }
+            return u;
+        }
+        // u,v間の距離
+        int dist(int u, int v) {
+            return depth(u) + depth(v) - 2 * depth(query(u, v));
+        }
+    };${0}
+
+snippet     distance_nonweight
+abbr        重みのないグラフの距離
+alias       dist
+options     head
+    // 辺の長さを無視した距離
+    // depend:edge
+    vector<int> distance_nonweight(vector<vector<edge>> &g, int start) {
+        vector<int> res(g.size(), INT_MAX);
+        res[start] = 0;
+        queue<int> bfs;
+        bfs.push(start);
+        while (!bfs.empty()) {
+            int now = bfs.front();
+            bfs.pop();
+            for (auto e : g[now]) {
+                int next = e.to;
+                if (res[next] > res[now] + 1) {
+                    res[next] = res[now] + 1;
+                    bfs.push(next);
+                }
+            }
+        }
+        return res;
     }${0}
 
 snippet     dijkstra

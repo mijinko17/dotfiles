@@ -36,6 +36,7 @@ set number
 set backspace=indent,eol,start
 set noswapfile
 set splitright
+set breakindent breakindentopt=shift:2
 filetype plugin indent on
 syntax enable
 highlight clear SignColumn
@@ -50,11 +51,13 @@ set softtabstop=4
 " 自動インデント時の空白数
 set shiftwidth=4
 " 改行時に次の行のインデントを調整
-set smartindent
+"set smartindent
 "set autoindent
 "}
 
 "コマンドの変更{
+nnoremap j gj
+nnoremap k gk
 "j連打でインサートを抜ける
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
@@ -85,11 +88,13 @@ inoremap '' ''<Left>
 inoremap "" ""<Left>
 "}
 
-"tex{
-if expand("%:t") =~ ".*\.tex"
-  inoremap ; \
-  inoremap \ ;
-  inoremap $ $$<Left>
-endif
-command! Cp :VimtexCompile
-"}
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+autocmd BufWritePre *.py :call LanguageClient#textDocument_formatting_sync()
+autocmd BufWritePre *.ts :call LanguageClient#textDocument_formatting_sync()
+
+"" Compile on initialization, cleanup on quit
+"augroup vimtex_event_1
+"  au!
+"  au User VimtexEventQuit     call vimtex#compiler#clean(0)
+"  au User VimtexEventInitPost call vimtex#compiler#compile()
+"augroup END

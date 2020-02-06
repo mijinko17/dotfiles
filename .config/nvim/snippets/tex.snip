@@ -10,7 +10,11 @@ alias   alpha
 options word
     \alpha
 
-snippet     aiueo
-    aaaaaaaa
-    aaa \\\\
-    aaaa
+snippet     child
+abbr        template for separating
+options     head
+    \documentclass[../main]{subfiles}
+
+    \begin{document}
+        ${0}
+    \end{document}

@@ -132,8 +132,8 @@
          id="rect"
          style="fill:blue;"
          usecurrent="1"
-         width="554.286"
-         height="202.857"
+         width="296.053"
+         height="171.053"
          rx="0"
          ry="0" />
       <eventcontext
@@ -194,7 +194,7 @@
        style="fill:none;stroke:black;stroke-opacity:1;stroke-linejoin:miter;stroke-linecap:butt;">
       <eventcontext
          id="pencil"
-         tolerance="69.5385"
+         tolerance="58.1154"
          selcue="1"
          style="stroke-width:1px;"
          usecurrent="0"
@@ -420,9 +420,11 @@
        id="paintbucket"
        style="fill:#a0a0a0;stroke:none;"
        usecurrent="1"
-       threshold="5"
+       threshold="15"
        offset="0"
-       offsetunits="pt" />
+       offsetunits="pt"
+       channels="0"
+       autogap="0" />
     <group
        unit="mm"
        offset="5"
@@ -573,7 +575,7 @@
        panel_mode="1"
        panel_wrap="0"
        panel_border="0"
-       page="0"
+       page="1"
        x="0"
        y="0"
        w="396"
@@ -616,7 +618,17 @@
        placement="1" />
     <group
        id="preferences"
-       state="1" />
+       state="1"
+       page="9"
+       panel_size="1"
+       panel_ratio="100"
+       panel_mode="1"
+       panel_wrap="0"
+       panel_border="0"
+       x="571"
+       y="385"
+       w="298"
+       h="108" />
     <group
        id="gradienteditor" />
     <group
@@ -643,14 +655,14 @@
          value="page" />
       <group
          id="defaultxdpi"
-         value="38.1" />
+         value="101.6" />
     </group>
     <group
        id="save_as"
        default="org.inkscape.output.svg.inkscape"
        append_extension="1"
        enable_preview="1"
-       path="/Users/user/Documents/math/slide/natsu_gashuku_2019/picture"
+       path="/Users/user/Documents/math/master_slide/picture"
        use_current_dir="1" />
     <group
        id="save_copy"
@@ -693,7 +705,19 @@
        id="treeeditor" />
     <group
        id="layers"
-       maxDepth="20" />
+       maxDepth="20"
+       panel_size="1"
+       panel_ratio="100"
+       panel_mode="1"
+       panel_wrap="0"
+       panel_border="0"
+       x="0"
+       y="0"
+       w="409"
+       h="175"
+       visible="0"
+       state="2"
+       placement="1" />
     <group
        id="extensioneditor" />
     <group
@@ -706,7 +730,19 @@
     <group
        id="colorpickerwindow" />
     <group
-       id="undo-history" />
+       id="undo-history"
+       panel_size="1"
+       panel_ratio="100"
+       panel_mode="1"
+       panel_wrap="0"
+       panel_border="0"
+       x="0"
+       y="0"
+       w="394"
+       h="454"
+       visible="0"
+       state="2"
+       placement="1" />
     <group
        id="transparency"
        on-focus="1.0"
@@ -1005,15 +1041,15 @@
      org.ekips.filter.turtle.lindenmayer.langle="16"
      org.ekips.filter.turtle.lindenmayer.rangle="16"
      org.ekips.filter.turtle.lindenmayer.randomizeangle="0"
-     org.inkscape.effect.eqtexsvg.formule="$\mathbb{R}$" />
+     org.inkscape.effect.eqtexsvg.formule="$t&lt;0$" />
   <group
      id="desktop"
-     style="line-height:1.25;stroke-width:8.69291306;stroke-miterlimit:4;stroke-dasharray:8.69291306, 17.38582611000000000;fill-rule:evenodd;stroke:#ff0000;stroke-opacity:1;fill:#ffffff;fill-opacity:0;opacity:1;stroke-dashoffset:0">
+     style="line-height:1.25;stroke-width:7.42677165;stroke-miterlimit:4;stroke-dasharray:none;fill-rule:evenodd;stroke:none;stroke-opacity:1;fill:#ff0000;fill-opacity:0.37218046;opacity:1;stroke-dashoffset:0;stroke-linecap:round;font-variant-east_asian:normal;vector-effect:none;stroke-linejoin:miter">
     <group
-       width="1403"
-       height="856"
-       x="25"
-       y="4"
+       width="1387"
+       height="855"
+       x="0"
+       y="1"
        fullscreen="0"
        id="geometry"
        maximized="1" />

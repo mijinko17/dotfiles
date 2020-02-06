@@ -1,0 +1,3 @@
+inoremap ; \
+inoremap \ ;
+inoremap $ $$<Left>

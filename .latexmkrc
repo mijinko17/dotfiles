@@ -8,3 +8,5 @@ $max_repeat       = 5;
 $pdf_mode         = 3;
 $pvc_view_file_via_temporary = 0;
 $pdf_previewer = "open /Applications/Skim.app";
+@generated_exts = ( 'aux', 'bcf', 'fls', 'idx', 'ind', 'lof', 'lot', 'out', 'toc','dvi' );
+$out_dir = 'build';

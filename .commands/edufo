@@ -1,0 +1,5 @@
+mkdir -p ~/program/competitive-programming/Codeforces/edufo/$1
+cd ~/program/competitive-programming/Codeforces/edufo/$1
+if [ "$2" != "" ]; then
+	nvim $2.cpp
+fi
