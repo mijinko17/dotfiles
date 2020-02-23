@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir -p $COMPRO/Atcoder/ABC/$1
+cd $COMPRO/Atcoder/ABC/$1
+if [ "$2" != "" ]; then
+	nvim $2.cpp
+fi

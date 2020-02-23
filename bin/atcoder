@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ~/program/competitive-programming/Atcoder/test
 if [ "$1" != "" ]; then
 	nvim $1.cpp

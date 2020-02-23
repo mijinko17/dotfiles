@@ -37,27 +37,12 @@ let g:neosnippet#enable_complete_done = 1
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
-#基本のスニペット入ってるやつ
-[[plugins]]
-repo = 'rhysd/vim-clang-format'
-on_ft = 'cpp'
-hook_add='''
-let g:clang_format#auto_format = 1
-let g:clang_format#style_options = {
-            \ "BasedOnStyle" : "Google",
-            \ "IndentWidth" : 4,
-            \ "AllowShortFunctionsOnASingleLine" : "Empty",
-            \ }
-'''
-
-
 [[plugins]]
 repo = 'prettier/vim-prettier'
 hook_add = '''
 autocmd BufWritePre *.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
 let g:prettier#config#tab_width = 4
 '''
-
 
 [[plugins]]
 repo = 'lervag/vimtex'

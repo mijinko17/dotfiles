@@ -58,6 +58,9 @@ set shiftwidth=4
 "コマンドの変更{
 nnoremap j gj
 nnoremap k gk
+" ノーマルモード時だけ ; と : を入れ替える
+nnoremap ; :
+nnoremap : ;
 "j連打でインサートを抜ける
 inoremap <silent> jj <ESC>
 inoremap <silent> ｊｊ <ESC>
@@ -69,7 +72,7 @@ noremap OO O<ESC>
 "raで全選択＋クリップボードにヤンク
 noremap ra ggvG$"+y
 "insert中の移動
-imap <C-h> <Left>
+imap <C-u> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
@@ -81,20 +84,9 @@ nmap <silent><Esc><Esc> :nohlsearch<CR><Esc>
 inoremap { {}<Left>
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap ( ()<Left>
-"中括弧エンターみたいな挙動にしたいが同じ方法ではうまくいかないので仕方なくこうしている
-inoremap (<CR> (<CR><BS><BS>)<ESC><S-o><BS>
 inoremap [ []<Left>
 inoremap '' ''<Left>
 inoremap "" ""<Left>
 "}
 
-autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
-autocmd BufWritePre *.py :call LanguageClient#textDocument_formatting_sync()
-autocmd BufWritePre *.ts :call LanguageClient#textDocument_formatting_sync()
-
-"" Compile on initialization, cleanup on quit
-"augroup vimtex_event_1
-"  au!
-"  au User VimtexEventQuit     call vimtex#compiler#clean(0)
-"  au User VimtexEventInitPost call vimtex#compiler#compile()
-"augroup END
+"autocmd BufWritePre *.go,*.py,*.ts,*.cpp :call LanguageClient#textDocument_formatting_sync()

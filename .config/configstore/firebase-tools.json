@@ -1,0 +1,58 @@
+{
+	"analytics-uuid": "455c493a-4c67-49b3-b2bd-5100d18b5e02",
+	"motd": {
+		"minVersion": "3.0.5"
+	},
+	"motd.fetched": 1579278016219,
+	"usage": false,
+	"user": {
+		"iss": "accounts.google.com",
+		"azp": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"aud": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"sub": "111074889150979080576",
+		"email": "kougouseikeidansi@gmail.com",
+		"email_verified": true,
+		"at_hash": "ov8UI4IOqRiAdeOlYEaFXA",
+		"iat": 1578466921,
+		"exp": 1578470521
+	},
+	"tokens": {
+		"expires_at": 1579349810480,
+		"refresh_token": "1//0eLLuNj3obxlDCgYIARAAGA4SNwF-L9Ir2OPqPuHX82hGeUAaTi97NeoFP1QrAgQvISg6qswGhzbgxrFQbrDIjJevxCn7GEG46Tc",
+		"scopes": [
+			"email",
+			"https://www.googleapis.com/auth/cloud-platform",
+			"https://www.googleapis.com/auth/cloudplatformprojects.readonly",
+			"https://www.googleapis.com/auth/firebase",
+			"openid"
+		],
+		"access_token": "ya29.Ima6BxVRXm55gFeHIutU9WuYxMS3YdtpvCqn69ovE6rGAyizGw5s-XbLAtOhR6kMN3itknTNKlip1N27tinI7QWoqE16pdgcwrNRdxIwLEppE7E7jsVcrwf6KFFcpv7vAyT-caP7uPA",
+		"expires_in": 3599,
+		"scope": "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/firebase https://www.googleapis.com/auth/cloudplatformprojects.readonly",
+		"token_type": "Bearer",
+		"id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjVlZGQ5NzgyZDgyMDQwM2VlODUxOGM0YWFiYjJiOWZlMzEwY2FjMTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNTYzNTg0MzM1ODY5LWZncmhnbWQ0N2JxbmVraWo1aThiNXByMDNobzg0OWU2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNTYzNTg0MzM1ODY5LWZncmhnbWQ0N2JxbmVraWo1aThiNXByMDNobzg0OWU2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTExMDc0ODg5MTUwOTc5MDgwNTc2IiwiZW1haWwiOiJrb3Vnb3VzZWlrZWlkYW5zaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlRaUG5lMkx3QlBQYUhqbWFJSWczZHciLCJpYXQiOjE1NzkzNDYyMjEsImV4cCI6MTU3OTM0OTgyMX0.i35iboWs5ehsZ5CakAHbz-tkHRlbGNO0CqE0hsPOQlLWnRiHnSGThNTFvabHpV1HQxaZJE8K-fK25WALiTJd6E-4pE6gnuFUBb3Evs4g64Qrd0fPwwHwPalIBJJDVKgBGaH9wS-fh_pmVvD8sx7bM0HhVmaBKQiz7Ke4JZ35Hn3eGaD8VBNOFqUAn9n85xeOnrGOzJVL3rLEwltic8_DQ3g03L7H9H4mh_FQNJi6yutR4vtdm2mwdQQSpt8FX5PDTxtHcxWQ7x3TSIKg92VM4CJETQzTmKVonYpJ9IEXZIB4Ly7skciR_TGP8pTgxg_cWiSd5pfcn1btAHACmRWuHA"
+	},
+	"activeProjects": {
+		"/Users/user/program/typescript/firebase_test": "test-f9482",
+		"/Users/user/program/typescript/firebase_typescript": "fir-typescript-45160"
+	},
+	"webconfig": {
+		"test-f9482": {
+			"projectId": "test-f9482",
+			"databaseURL": "https://test-f9482.firebaseio.com",
+			"storageBucket": "test-f9482.appspot.com",
+			"apiKey": "AIzaSyBGqF6z57V4yYNqfVPVvOqFTkGnsmRgm5s",
+			"authDomain": "test-f9482.firebaseapp.com",
+			"messagingSenderId": "74416609919"
+		},
+		"fir-typescript-45160": {
+			"projectId": "fir-typescript-45160",
+			"appId": "1:899161468773:web:de4a5b1d891b8b92403b8c",
+			"databaseURL": "https://fir-typescript-45160.firebaseio.com",
+			"storageBucket": "fir-typescript-45160.appspot.com",
+			"apiKey": "AIzaSyDWcXbcYiuw0lYPK1sQzi95HXJp56AqmTQ",
+			"authDomain": "fir-typescript-45160.firebaseapp.com",
+			"messagingSenderId": "899161468773"
+		}
+	}
+}

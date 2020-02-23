@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p ~/program/competitive-programming/Atcoder/other/$1
 cd ~/program/competitive-programming/Atcoder/other/$1
 if [ "$2" != "" ]; then

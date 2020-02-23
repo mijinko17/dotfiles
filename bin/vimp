@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ "$1" != "" ]; then
 	nvim ~/.config/nvim/dein/dein_lazy.toml
 else
