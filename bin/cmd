@@ -1,5 +1,5 @@
 #!/bin/bash
 
 if [ "$1" != "" ]; then
-	nvim ~/.commands/$1
+	nvim $HOME/bin/$1
 fi

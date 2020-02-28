@@ -1,11 +1,11 @@
 [
     {
         "arguments": [
-            "g++",
+            "g++-9",
             "-Wall",
             "-std=c++17",
-            "-I/usr/local/Cellar/gcc/9.2.0_3/include/c++/9.2.0",
-            "-I/usr/local/Cellar/gcc/9.2.0_3/include/c++/9.2.0/x86_64-apple-darwin17"
+            "-I/usr/local/Cellar/gcc/9.2.0_3/include/c++/9.2.0/",
+            "-I/usr/local/Cellar/gcc/9.2.0_3/include/c++/9.2.0/x86_64-apple-darwin19/"
         ],
         "directory": "/~",
         "file": ""

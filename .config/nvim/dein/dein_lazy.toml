@@ -30,6 +30,7 @@ command Snip :NeoSnippetEdit
 "スニペットの場所を指定
 let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 "languageclientでスニペット機能(関数の引数補完)を使うのに必要
+let g:neosnippet#enable_completed_snippet = 1
 let g:neosnippet#enable_complete_done = 1
 '''
 

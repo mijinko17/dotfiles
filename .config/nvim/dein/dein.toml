@@ -42,6 +42,7 @@ build = 'bash install.sh'
 hook_add = '''
 set signcolumn=yes
 let g:LanguageClient_serverCommands = {
+"            \ 'cpp': ['ccls'],
             \ 'cpp': ['clangd', '-header-insertion=never'],
             \ 'go': ['gopls'],
             \ 'python': ['pyls'],
@@ -54,7 +55,9 @@ let g:LanguageClient_serverCommands = {
 autocmd BufWritePre *.go,*.py,*.ts,*.cpp,*.vue :call LanguageClient#textDocument_formatting_sync()
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_hasSnippetSupport=1
-let g:LanguageClient_settingsPath='~/settings.json'
+"let g:LanguageClient_settingsPath='~/settings.json'
+let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+"let g:LanguageClient_completionPreferTextEdit=1
 set completefunc=LanguageClient#complete
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
@@ -74,7 +77,7 @@ nnoremap ri :vs<Space>input<CR>
 "インプットファイルから実行
 nnoremap re :QuickRun<Space>-input<Space>input<CR>
 let g:quickrun_config.cpp = {
-\   'command': 'g++',
+\   'command': 'g++-9',
 \   'cmdopt': '-std=c++14',
 \   'outputter/buffer/split': '10'
 \ }
