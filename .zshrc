@@ -20,8 +20,8 @@ autoload -Uz vcs_info
 
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "∗"
-zstyle ':vcs_info:git:*' unstagedstr "+"
-zstyle ':vcs_info:*' formats '(%b %c%u)'
+zstyle ':vcs_info:git:*' unstagedstr " +"
+zstyle ':vcs_info:*' formats '(%b%c%u)'
 zstyle ':vcs_info:*' actionformats '(%b|%a %c%u)'
  
 precmd () { vcs_info }
