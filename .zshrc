@@ -15,7 +15,7 @@ colors
 # 大文字と小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
  
-#プロンプト周り{{
+# プロンプト周り{{
 autoload -Uz vcs_info
 
 zstyle ':vcs_info:git:*' check-for-changes true

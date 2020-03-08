@@ -41,8 +41,8 @@ repo = 'Shougo/neosnippet-snippets'
 [[plugins]]
 repo = 'prettier/vim-prettier'
 hook_add = '''
-autocmd BufWritePre *.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
-let g:prettier#config#tab_width = 4
+autocmd BufWritePre *.html,*.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
+let g:prettier#config#tab_width = 2
 '''
 
 [[plugins]]

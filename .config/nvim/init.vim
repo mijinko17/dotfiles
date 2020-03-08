@@ -37,6 +37,7 @@ set backspace=indent,eol,start
 set noswapfile
 set splitright
 set breakindent breakindentopt=shift:2
+set mouse=a
 filetype plugin indent on
 syntax enable
 highlight clear SignColumn
@@ -88,5 +89,3 @@ inoremap [ []<Left>
 inoremap '' ''<Left>
 inoremap "" ""<Left>
 "}
-
-"autocmd BufWritePre *.go,*.py,*.ts,*.cpp :call LanguageClient#textDocument_formatting_sync()

@@ -52,7 +52,7 @@ let g:LanguageClient_serverCommands = {
             \ 'tex': ['digestif'],
 "            \ 'tex': ['texlab'],
             \ }
-autocmd BufWritePre *.go,*.py,*.ts,*.cpp,*.vue :call LanguageClient#textDocument_formatting_sync()
+autocmd BufWritePre *.go,*.py,*.cpp,*.vue :call LanguageClient#textDocument_formatting_sync()
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_hasSnippetSupport=1
 "let g:LanguageClient_settingsPath='~/settings.json'
@@ -95,3 +95,6 @@ let g:quickrun_config.go = {
 [[plugins]]
 repo = 'cespare/vim-toml'
 on_ft='toml'
+
+[[plugins]]
+repo = "airblade/vim-gitgutter"
