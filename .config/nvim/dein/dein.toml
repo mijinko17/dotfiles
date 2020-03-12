@@ -40,6 +40,7 @@ rev = 'next'
 depends = ['deoplete.nvim']
 build = 'bash install.sh'
 hook_add = '''
+set hidden
 set signcolumn=yes
 let g:LanguageClient_serverCommands = {
 "            \ 'cpp': ['ccls'],
@@ -49,10 +50,12 @@ let g:LanguageClient_serverCommands = {
             \ 'javascript': ['typescript-language-server', '--stdio'],
             \ 'typescript': ['typescript-language-server', '--stdio'],
             \ 'vue': ['vls'],
+"            \ 'rust': ['rust-analyzer'],
+            \ 'rust': ['rls'],
             \ 'tex': ['digestif'],
 "            \ 'tex': ['texlab'],
             \ }
-autocmd BufWritePre *.go,*.py,*.cpp,*.vue :call LanguageClient#textDocument_formatting_sync()
+autocmd BufWritePre *.go,*.py,*.cpp,*.vue,*.rs :call LanguageClient#textDocument_formatting_sync()
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_hasSnippetSupport=1
 "let g:LanguageClient_settingsPath='~/settings.json'
@@ -89,6 +92,14 @@ let g:quickrun_config.go = {
 \   'command' : 'go',
 \   'outputter/buffer/split': '10'
 \}
+let g:quickrun_config.typescript = {
+\   'command' : 'tsc',
+\   'outputter/buffer/split': '10'
+\}
+let g:quickrun_config.rust = {
+\   'command' : 'rustc',
+\   'outputter/buffer/split': '10'
+\}
 '''
 
 #tomlファイルのシンタックスハイライト
@@ -98,3 +109,6 @@ on_ft='toml'
 
 [[plugins]]
 repo = "airblade/vim-gitgutter"
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
