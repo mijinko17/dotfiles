@@ -40,7 +40,6 @@ rev = 'next'
 depends = ['deoplete.nvim']
 build = 'bash install.sh'
 hook_add = '''
-set hidden
 set signcolumn=yes
 let g:LanguageClient_serverCommands = {
 "            \ 'cpp': ['ccls'],

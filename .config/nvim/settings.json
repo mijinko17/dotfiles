@@ -1,4 +1,43 @@
 {
-  "rust.all_features": true,
-  "rust.clippy_preference": "on"
+  "initializationOptions": {
+    "cache": {
+      "directory": "~/tmp/ccls"
+    },
+    "config": {
+      "vetur": {
+        "useWorkspaceDependencies": false,
+        "validation": {
+          "template": true,
+          "style": true,
+          "script": true
+        },
+        "completion": {
+          "autoImport": false,
+          "useScaffoldSnippets": false,
+          "tagCasing": "kebab"
+        },
+        "format": {
+          "defaultFormatter": {
+            "js": "none",
+            "ts": "none"
+          },
+          "defaultFormatterOptions": {},
+          "scriptInitialIndent": false,
+          "styleInitialIndent": false
+        }
+      },
+      "css": {},
+      "html": {
+        "suggest": {}
+      },
+      "javascript": {
+        "format": {}
+      },
+      "typescript": {
+        "format": {}
+      },
+      "emmet": {},
+      "stylusSupremacy": {}
+    }
+  }
 }
