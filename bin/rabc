@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mkdir -p $COMPRO/Atcoder/ABCrust/$1/src
+cd $COMPRO/Atcoder/ABCrust/$1
+#cp ../par_cargo.toml ./Cargo.toml
+if [ ! -f ./Cargo.toml ]; then
+    cp ../par_cargo.toml ./Cargo.toml
+fi
+
+if [ "$2" != "" ]; then
+    grep -q "src/${2}.rs" ./Cargo.toml
+    if [ $? != 0 ]; then
+        echo "" >> Cargo.toml
+        echo "[[bin]]" >> Cargo.toml
+        echo "name = \"${2}\"" >> Cargo.toml
+        echo "path = \"src/${2}.rs\"" >> Cargo.toml
+    fi
+	nvim src/$2.rs
+fi

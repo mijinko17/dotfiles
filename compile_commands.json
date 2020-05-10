@@ -4,8 +4,8 @@
       "g++-9",
       "-Wall",
       "-std=c++17",
-      "-I/usr/local/include/c++/9.2.0",
-      "-I/usr/local/include/c++/9.2.0/x86_64-apple-darwin19"
+      "-I/usr/local/include/c++/9.3.0",
+      "-I/usr/local/include/c++/9.3.0/x86_64-apple-darwin19"
     ],
     "directory": "/",
     "file": ""

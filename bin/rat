@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd ~/program/competitive-programming/Atcoder/rust_test/src
+if [ "$1" != "" ]; then
+	nvim $1.rs
+else
+	nvim main.rs
+fi

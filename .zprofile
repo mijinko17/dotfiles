@@ -5,3 +5,5 @@ export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 export COMPRO=$HOME/program/competitive-programming
+
+export PATH="$HOME/.cargo/bin:$PATH"

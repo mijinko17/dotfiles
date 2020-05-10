@@ -78,7 +78,7 @@ imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
 " ESC連打でハイライト解除
-nmap <silent><Esc><Esc> :nohlsearch<CR><Esc>
+nmap <silent><Esc><Esc> :noh
 "}
 
 " カッコ補完{
