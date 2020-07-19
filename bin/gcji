@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$1" != "" ]; then
+	g++-9 $1.cpp
+    if [ "$2" != "" ]; then
+        TESTSET=$2
+    else
+        TESTSET=0
+    fi
+    python $COMPRO/Google_Code_Jam/interactive_runner.py python testing_tool.py $TESTSET -- ./a.out
+    rm a.out
+fi

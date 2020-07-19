@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/program/rust/rust-snippets/
+cargo snippet > ~/.config/nvim/snippets/rust_snippets.snip

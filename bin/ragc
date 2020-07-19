@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir -p $COMPRO/Atcoder/ABCrust/$1/src
-cd $COMPRO/Atcoder/ABCrust/$1
+mkdir -p $COMPRO/Atcoder/AGCrust/$1/src
+cd $COMPRO/Atcoder/AGCrust/$1
 if [ ! -f ./Cargo.toml ]; then
     cp ../par_cargo.toml ./Cargo.toml
 fi

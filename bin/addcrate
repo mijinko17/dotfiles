@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$1" != "" -a "$2" != "" ]; then
+    CRATE="${1} = \"${2}\""
+    insert_crate () {
+        grep -q "${1}" ${2}
+        if [ $? != 0 ]; then
+            ROW=$(($(grep -n dependencies ${2} | cut -d ":" -f 1)+1))
+            sed -i .bak "${ROW}i\\
+            ${1}
+            " ${2}
+            rm ${2}.bak
+        fi
+    }
+    find $COMPRO/Atcoder/ABCrust/*/Cargo.toml -type f | while read FILE
+    do
+        insert_crate "${CRATE}" ${FILE}
+    done
+    insert_crate "${CRATE}" $COMPRO/Atcoder/ABCrust/par_cargo.toml
+    insert_crate "${CRATE}" $COMPRO/Atcoder/rust_test/Cargo.toml
+fi
+
