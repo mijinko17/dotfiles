@@ -7,14 +7,19 @@ let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 '''
 
+[[plugins]]
+repo = 'Shougo/deoplete-lsp'
+on_event = 'InsertCharPre'
+
 #スニペット
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
-rev = '3581e4c'
+#rev = '3581e4c'
 depends = ['neosnippet-snippets']
 on_event = 'InsertCharPre'
 on_ft = 'snippet'
 hook_add='''
+
 " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ
 imap <expr><TAB>
             \ pumvisible() ? "\<Down>" :
@@ -22,17 +27,22 @@ imap <expr><TAB>
             \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
             \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
 " エンターキーでスニペット挿入or補完確定orポップアップ閉じる
 imap <expr><CR>
             \ (pumvisible() && neosnippet#expandable()) ? "\<C-y>" :
             \ pumvisible() ? deoplete#close_popup() :"\<CR>"
+
 "ユーザースニペットのやつ呼び出すコマンド長スギ
 command Snip :NeoSnippetEdit
+
 "スニペットの場所を指定
 let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+
 "languageclientでスニペット機能(関数の引数補完)を使うのに必要
-"let g:neosnippet#enable_completed_snippet = 1
+let g:neosnippet#enable_completed_snippet = 1
 let g:neosnippet#enable_complete_done = 1
+
 '''
 
 #基本のスニペット入ってるやつ

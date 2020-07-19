@@ -75,7 +75,7 @@ noremap ra ggvG$"+y
 "insert中の移動
 imap <C-u> <Left>
 imap <C-j> <Down>
-imap <C-k> <Up>
+"imap <C-k> <Up>
 imap <C-l> <Right>
 " ESC連打でハイライト解除
 nmap <silent><Esc><Esc> :noh
@@ -93,3 +93,10 @@ inoremap "" ""<Left>
 if &filetype == 'haskell'
     let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
 endif
+
+:lua << END
+  require'nvim_lsp'.clangd.setup{
+    cmd = {"clangd", "--background-index","-header-insertion=never"};
+  }
+  require'nvim_lsp'.rust_analyzer.setup{}
+END

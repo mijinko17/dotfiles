@@ -34,38 +34,38 @@ endif
 #endif
 #'''
 
-[[plugins]]
-repo = 'autozimu/LanguageClient-neovim'
-rev = 'next'
-depends = ['deoplete.nvim']
-build = 'bash install.sh'
-hook_add = '''
-set signcolumn=yes
-let g:LanguageClient_serverCommands = {
-"            \ 'cpp': ['ccls'],
-            \ 'cpp': ['clangd', '-header-insertion=never'],
-            \ 'go': ['gopls'],
-            \ 'python': ['pyls'],
-            \ 'javascript': ['typescript-language-server', '--stdio'],
-            \ 'typescript': ['typescript-language-server', '--stdio'],
-            \ 'vue': ['vls'],
-"            \ 'rust': ['rust-analyzer'],
-            \ 'rust': ['rls'],
-            \ 'tex': ['digestif'],
-            \ 'haskell': ['hie-wrapper', '--lsp'],
-"            \ 'tex': ['texlab'],
-            \ }
-autocmd BufWritePre *.go,*.py,*.cpp,*.vue,*.rs,*.hs :call LanguageClient#textDocument_formatting_sync()
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_hasSnippetSupport=1
-"let g:LanguageClient_settingsPath='~/settings.json'
-"let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
-"let g:LanguageClient_completionPreferTextEdit=1
-set completefunc=LanguageClient#complete
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> rn :call LanguageClient#textDocument_rename()<CR>
-'''
+#[[plugins]]
+#repo = 'autozimu/LanguageClient-neovim'
+#rev = 'next'
+#depends = ['deoplete.nvim']
+#build = 'bash install.sh'
+#hook_add = '''
+#set signcolumn=yes
+#let g:LanguageClient_serverCommands = {
+#"            \ 'cpp': ['ccls'],
+#            \ 'cpp': ['clangd', '-header-insertion=never'],
+#            \ 'go': ['gopls'],
+#            \ 'python': ['pyls'],
+#            \ 'javascript': ['typescript-language-server', '--stdio'],
+#            \ 'typescript': ['typescript-language-server', '--stdio'],
+#            \ 'vue': ['vls'],
+#            \ 'rust': ['rust-analyzer'],
+#"            \ 'rust': ['rls'],
+#            \ 'tex': ['digestif'],
+#            \ 'haskell': ['hie-wrapper', '--lsp'],
+#"            \ 'tex': ['texlab'],
+#            \ }
+#autocmd BufWritePre *.go,*.py,*.cpp,*.vue,*.rs,*.hs :call LanguageClient#textDocument_formatting_sync()
+#let g:LanguageClient_loadSettings = 1
+#let g:LanguageClient_hasSnippetSupport=1
+#"let g:LanguageClient_settingsPath='~/settings.json'
+#"let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+#"let g:LanguageClient_completionPreferTextEdit=1
+#set completefunc=LanguageClient#complete
+#nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+#nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+#nnoremap <silent> rn :call LanguageClient#textDocument_rename()<CR>
+#'''
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
@@ -120,11 +120,11 @@ repo = "airblade/vim-gitgutter"
 repo = 'neovimhaskell/haskell-vim'
 on_ft = 'haskell'
 
-#[[plugins]]
-#repo = 'Shougo/deoplete.nvim'
-#on_event = 'InsertEnter'
-#hook_add='''
-#let g:deoplete#enable_at_startup = 1
-#"関数補完時に画面下に出るプレビューウィンドウを非表示
-#set completeopt-=preview
-#'''
+[[plugins]]
+repo = 'neovim/nvim-lsp'
+hook_add = '''
+nnoremap <silent>K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent>rn     <cmd>lua vim.lsp.buf.rename()<CR>
+autocmd BufWritePre *.cpp,*.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+set signcolumn=yes
+'''
