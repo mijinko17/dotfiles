@@ -89,3 +89,7 @@ inoremap [ []<Left>
 inoremap '' ''<Left>
 inoremap "" ""<Left>
 "}
+"
+if &filetype == 'haskell'
+    let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+endif

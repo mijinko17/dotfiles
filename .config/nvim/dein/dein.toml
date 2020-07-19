@@ -52,13 +52,14 @@ let g:LanguageClient_serverCommands = {
 "            \ 'rust': ['rust-analyzer'],
             \ 'rust': ['rls'],
             \ 'tex': ['digestif'],
+            \ 'haskell': ['hie-wrapper', '--lsp'],
 "            \ 'tex': ['texlab'],
             \ }
-autocmd BufWritePre *.go,*.py,*.cpp,*.vue,*.rs :call LanguageClient#textDocument_formatting_sync()
+autocmd BufWritePre *.go,*.py,*.cpp,*.vue,*.rs,*.hs :call LanguageClient#textDocument_formatting_sync()
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_hasSnippetSupport=1
 "let g:LanguageClient_settingsPath='~/settings.json'
-let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+"let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
 "let g:LanguageClient_completionPreferTextEdit=1
 set completefunc=LanguageClient#complete
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
@@ -97,8 +98,12 @@ let g:quickrun_config.typescript = {
 \   'outputter/buffer/split': '10'
 \}
 let g:quickrun_config.rust = {
-\   'command' : 'rustc',
-\   'cmdopt': '-A unused-variables -A unused-mut',
+\   'command' : 'cargo',
+\   'exec': ['cargo run %o %s:t:r'],
+\   'cmdopt': '--quiet --bin',
+\   'outputter/buffer/split': '10'
+\}
+let g:quickrun_config.haskell = {
 \   'outputter/buffer/split': '10'
 \}
 '''
@@ -110,3 +115,16 @@ on_ft='toml'
 
 [[plugins]]
 repo = "airblade/vim-gitgutter"
+
+[[plugins]]
+repo = 'neovimhaskell/haskell-vim'
+on_ft = 'haskell'
+
+#[[plugins]]
+#repo = 'Shougo/deoplete.nvim'
+#on_event = 'InsertEnter'
+#hook_add='''
+#let g:deoplete#enable_at_startup = 1
+#"関数補完時に画面下に出るプレビューウィンドウを非表示
+#set completeopt-=preview
+#'''

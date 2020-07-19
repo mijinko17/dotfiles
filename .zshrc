@@ -29,3 +29,4 @@ precmd () { vcs_info }
 setopt PROMPT_SUBST ; PS1='%n@%m %c %F{red}${vcs_info_msg_0_}%f
 %% '
 # }}
+#eval "$(pyenv init -)"
